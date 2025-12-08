@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johnny@cybersec ~ SIEM01 | Security Operations Center</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =================================================================
+           CSS VARIABLES - SIEM Specific Theme (Blue/Defense Identity)
+           ================================================================= */
+        :root {
+            /* Background: Deep Midnight Blue (#0b1121) */
+            --bg: #0b1121;
+            
+            /* Solid Card Background - Dark Slate Blue */
+            --card-bg: #151e32;
+            --border: #2d3b55;
+            
+            /* Accents */
+            --primary: #0ea5e9;         /* Electric Blue */
+            --primary-glow: #38bdf8;
+            
+            --purple: #8b5cf6;          /* Hunting/Advanced */
+            --cyan: #22d3ee;
+            --green: #10b981;           /* Status Good */
+            --red: #f43f5e;             /* Alerts */
+            --gold: #fbbf24;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            /* Subtle blue grid pattern */
+            background-image:
+                linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           NAVIGATION
+           ================================================================= */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(11, 17, 33, 0.95);
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000;
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--primary); 
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* =================================================================
+           HERO SECTION
+           ================================================================= */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 0.5rem;
+            /* Defense Blue Gradient */
+            background: linear-gradient(to right, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .role { 
+            color: var(--text-muted); 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem; 
+            font-weight: 300;
+        }
+        
+        .meta-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .meta-grid strong { color: var(--primary); }
+        .status-badge { color: var(--green); font-weight: 700; border: 1px solid var(--green); padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; }
+
+        /* =================================================================
+           CONTENT LAYOUT
+           ================================================================= */
+        .content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            display: table; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .summary-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 4rem auto; 
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* =================================================================
+           ANALYSIS / DETECTION PANELS
+           ================================================================= */
+        .ops-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .ops-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .ops-panel.analysis { border-top: 4px solid var(--primary); }
+        .ops-panel.detection { border-top: 4px solid var(--purple); }
+
+        .ops-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .ops-panel.analysis .ops-title { color: var(--primary); }
+        .ops-panel.detection .ops-title { color: var(--purple); }
+
+        .ops-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .ops-panel.analysis .ops-link:hover {
+            background: rgba(14, 165, 233, 0.1);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .ops-panel.detection .ops-link:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--purple);
+            transform: translateX(5px);
+        }
+
+        /* =================================================================
+           MONITORING COVERAGE GRID
+           ================================================================= */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .cap-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block;
+            border-left: 4px solid var(--primary);
+        }
+
+        .cap-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1); /* Blue shadow */
+            border-color: var(--primary);
+        }
+
+        .cap-card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cap-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* =================================================================
+           OPERATIONAL DOCUMENTATION (Writeups)
+           ================================================================= */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .doc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .doc-card:hover {
+            border-color: var(--primary);
+            background: #1a243a;
+            transform: translateX(5px);
+        }
+
+        .doc-info h4 {
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .doc-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .doc-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        /* =================================================================
+           TECHNIQUE CARDS (MITRE/D3FEND)
+           ================================================================= */
+        .mitre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mitre-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .mitre-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .mitre-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .mitre-id {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .severity {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .severity.critical { background: var(--purple); color: white; }
+        .severity.high { background: var(--primary); color: white; }
+        .severity.medium { background: var(--cyan); color: var(--bg); }
+
+        .mitre-title {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* =================================================================
+           FOOTER
+           ================================================================= */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .uptime {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .uptime span { color: var(--primary); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1rem 3rem; }
+            h1 { font-size: 3rem; }
+            .content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">johnny@cyberlab:<span class="dollar">~$</span> cd siem01</div>
+    <a href="index.html" class="back-link">cd ..</a>
+</nav>
+
+<header class="hero">
+    <h1>SIEM01</h1>
+    <div class="role">Security Operations & Monitoring</div>
+    
+    <div class="meta-grid">
+        <div><strong>OS:</strong> Ubuntu Server 24.04 LTS</div>
+        <div><strong>Platform:</strong> Splunk Enterprise 9.x</div>
+        <div><strong>IP:</strong> 192.168.56.100</div>
+        <div><strong>User:</strong> jmeintel (root)</div>
+        <div><strong>Status:</strong> <span class="status-badge">MONITORING</span></div>
+    </div>
+</header>
+
+<div class="content">
+
+    <div class="summary-text">
+        SIEM01 serves as the centralized security operations hub for the entire lab environment, providing comprehensive visibility into attack progression and enabling real-time threat detection. This Splunk Enterprise deployment ingests logs from Domain Controllers and endpoints, utilizing custom correlation searches to detect advanced adversarial tactics. It demonstrates the "Blue Team" capability to identify, triage, and investigate the specific attacks launched from the KALI platform.
+    </div>
+
+    <div class="ops-container">
+        
+        <div class="ops-panel analysis">
+            <div class="ops-title">🔍 Analysis & Hunting</div>
+            <a href="analysis-credential-theft.html" class="ops-link">Credential Theft Detection</a>
+            <a href="analysis-lateral-movement.html" class="ops-link">Lateral Movement Tracking</a>
+            <a href="analysis-privilege-escalation.html" class="ops-link">Privilege Escalation Alerts</a>
+            <a href="analysis-threat-hunting.html" class="ops-link">Threat Hunting Workflows</a>
+        </div>
+
+        <div class="ops-panel detection">
+            <div class="ops-title">🛡️ Rules & Detection</div>
+            <a href="detection-correlation-rules.html" class="ops-link">Correlation Search Rules</a>
+            <a href="detection-automated-alerts.html" class="ops-link">Automated Alert Configuration</a>
+            <a href="detection-dashboard-design.html" class="ops-link">Security Dashboard Design</a>
+            <a href="detection-spl-queries.html" class="ops-link">Advanced SPL Queries</a>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Monitoring Coverage</h2>
+    <div class="capabilities-grid">
+        
+        <a href="coverage-token-impersonation.html" class="cap-card">
+            <h3>🔐 Token Impersonation (T1134)</h3>
+            <p>Sysmon Event ID 10 correlation detecting ProcessAccess to SYSTEM processes from medium-integrity contexts.</p>
+            <span class="impact-badge">Target: Potato Attacks</span>
+        </a>
+
+        <a href="coverage-kerberoasting.html" class="cap-card">
+            <h3>🎫 Kerberoasting (T1558.003)</h3>
+            <p>Analysis of Event 4769 for RC4 encryption (0x17) requests against service accounts.</p>
+            <span class="impact-badge">Target: Credential Theft</span>
+        </a>
+
+        <a href="coverage-credential-replay.html" class="cap-card">
+            <h3>🔄 Credential Replay (T1550)</h3>
+            <p>Detection of LogonType 3 (Network) anomalies and NTLM relay signatures in Event 4624.</p>
+            <span class="impact-badge">Target: Lateral Movement</span>
+        </a>
+
+        <a href="coverage-memory-access.html" class="cap-card">
+            <h3>💾 Process Memory Access (T1003)</h3>
+            <p>Alerting on non-standard processes requesting Handle access to lsass.exe via Sysmon ID 10.</p>
+            <span class="impact-badge">Target: Mimikatz</span>
+        </a>
+
+    </div>
+
+    <h2 class="section-title">Operational Documentation</h2>
+    <div class="docs-grid">
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>SOC Operations Runbook</h4>
+                <p>Standard detection procedures and triage workflows.</p>
+            </div>
+            <div class="doc-icon">📘</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Log Ingestion Topology</h4>
+                <p>Universal Forwarder configuration and data flow diagrams.</p>
+            </div>
+            <div class="doc-icon">📡</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>SPL Cheat Sheet</h4>
+                <p>Common queries for threat hunting in this lab.</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+    </div>
+
+    <h2 class="section-title">Detection Engineering</h2>
+    <div class="mitre-grid">
+        
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">D3FEND</span>
+                <span class="severity critical">CRITICAL</span>
+            </div>
+            <div class="mitre-title">Real-Time Detection</div>
+            <div class="tool-tags">
+                <span class="tag">SPL</span>
+                <span class="tag">CIM</span>
+                <span class="tag">TSTATS</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">LOG-001</span>
+                <span class="severity high">HIGH</span>
+            </div>
+            <div class="mitre-title">Advanced Log Analysis</div>
+            <div class="tool-tags">
+                <span class="tag">Regex</span>
+                <span class="tag">JSON</span>
+                <span class="tag">XML</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">HUNT-001</span>
+                <span class="severity high">HIGH</span>
+            </div>
+            <div class="mitre-title">Threat Hunting</div>
+            <div class="tool-tags">
+                <span class="tag">Data Models</span>
+                <span class="tag">Statistics</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">VIS-001</span>
+                <span class="severity medium">MEDIUM</span>
+            </div>
+            <div class="mitre-title">Dashboard Design</div>
+            <div class="tool-tags">
+                <span class="tag">XML/JSON Dashboards</span>
+                <span class="tag">Viz</span>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="btn-group">
+        <a id="emailBtn" href="#" class="btn">Email Me</a>
+        <a href="https://www.linkedin.com/in/johnny-meintel-3a9280269/" class="btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+    <div class="uptime">
+        Lab Online: <span id="uptime">calculating...</span>
+    </div>
+</footer>
+
+<script>
+// Email Obfuscation
+document.addEventListener('DOMContentLoaded', function() {
+    var e = document.getElementById('emailBtn');
+    if (e) {
+        var u = 'johnny';
+        var d = 'johnnymeintel.com';
+        e.addEventListener('click', function(event) {
+            this.href = 'mailto:' + u + '@' + d;
+        });
+    }
+});
+
+// ESC to Home
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = 'index.html';
+});
+
+// Uptime
+const labStartDate = new Date('2024-11-27T08:00:00');
+function updateUptime() {
+    const now = new Date();
+    const diff = now - labStartDate;
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('uptime').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+setInterval(updateUptime, 1000);
+updateUptime();
+</script>
+
+</body>
+</html>

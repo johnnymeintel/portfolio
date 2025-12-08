@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johnny@cybersec ~ KALI | Attack Platform</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =================================================================
+           CSS VARIABLES - KALI Specific Theme (Red/Offensive Identity)
+           ================================================================= */
+        :root {
+            /* Background: Void Black/Subtle Red Tint (#080505) */
+            --bg: #080505;
+            
+            /* Solid Card Background - Dark Charcoal */
+            --card-bg: #110d0d;
+            --border: #2b1d1d;
+            
+            /* Accents */
+            --primary: #ff4757;         /* Subtle Red */
+            --primary-glow: #ff6b81;
+            
+            --purple: #8b5cf6;          /* Secondary for complex attacks */
+            --cyan: #22d3ee;
+            --blue: #3b82f6;
+            --green: #10b981;
+            --orange: #f97316;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            /* Subtle red grid pattern */
+            background-image:
+                linear-gradient(rgba(255, 71, 87, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 71, 87, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           NAVIGATION
+           ================================================================= */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(8, 5, 5, 0.95);
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000;
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--primary); 
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* =================================================================
+           HERO SECTION
+           ================================================================= */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 0.5rem;
+            /* Aggressive Red Gradient */
+            background: linear-gradient(to right, var(--primary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .role { 
+            color: var(--text-muted); 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem; 
+            font-weight: 300;
+        }
+        
+        .meta-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .meta-grid strong { color: var(--primary); }
+        .risk-badge { color: var(--primary); font-weight: 700; border: 1px solid var(--primary); padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; }
+
+        /* =================================================================
+           CONTENT LAYOUT
+           ================================================================= */
+        .content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            display: table; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .summary-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 4rem auto; 
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* =================================================================
+           ATTACK / DEFENSE PANELS
+           ================================================================= */
+        .ops-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .ops-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .ops-panel.attack { border-top: 4px solid var(--primary); }
+        .ops-panel.recon { border-top: 4px solid var(--purple); }
+
+        .ops-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .ops-panel.attack .ops-title { color: var(--primary); }
+        .ops-panel.recon .ops-title { color: var(--purple); }
+
+        .ops-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .ops-panel.attack .ops-link:hover {
+            background: rgba(255, 71, 87, 0.1);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .ops-panel.recon .ops-link:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--purple);
+            transform: translateX(5px);
+        }
+
+        /* =================================================================
+           CAPABILITY GRID (Active Attacks)
+           ================================================================= */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .cap-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block;
+            border-left: 4px solid var(--primary);
+        }
+
+        .cap-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.1); /* Red shadow */
+            border-color: var(--primary);
+        }
+
+        .cap-card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cap-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* =================================================================
+           DOCUMENTATION / WRITEUPS SECTION (New Requirement)
+           ================================================================= */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .doc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .doc-card:hover {
+            border-color: var(--text-muted);
+            background: #1a1616;
+            transform: translateX(5px);
+        }
+
+        .doc-info h4 {
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .doc-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .doc-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        /* =================================================================
+           TECHNIQUE CARDS (MITRE)
+           ================================================================= */
+        .mitre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mitre-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .mitre-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .mitre-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .mitre-id {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            background: rgba(255, 71, 87, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .severity {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .severity.critical { background: var(--primary); color: white; }
+        .severity.high { background: var(--orange); color: white; }
+        .severity.medium { background: var(--blue); color: white; }
+
+        .mitre-title {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* =================================================================
+           FOOTER
+           ================================================================= */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(255, 71, 87, 0.05);
+        }
+
+        .uptime {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .uptime span { color: var(--primary); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1rem 3rem; }
+            h1 { font-size: 3rem; }
+            .content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">johnny@cyberlab:<span class="dollar">~$</span> cd kali</div>
+    <a href="index.html" class="back-link">cd ..</a>
+</nav>
+
+<header class="hero">
+    <h1>KALI</h1>
+    <div class="role">Offensive Operations Platform</div>
+    
+    <div class="meta-grid">
+        <div><strong>OS:</strong> Kali Linux 2024.4 (Rolling)</div>
+        <div><strong>Role:</strong> Red Team / Attack Box</div>
+        <div><strong>IP:</strong> 192.168.56.36</div>
+        <div><strong>User:</strong> kali (root)</div>
+        <div><strong>Status:</strong> <span class="risk-badge">ARMED</span></div>
+    </div>
+</header>
+
+<div class="content">
+
+    <div class="summary-text">
+        KALI is the dedicated offensive engine of the lab. Loaded with over 300 tools for enumeration, exploitation, and post-exploitation, this machine simulates the external threat actor or insider threat. From automated domain mapping with BloodHound to stealthy credential dumping with Impacket, this platform drives the "Purple Team" feedback loop by generating the attack traffic that defenders must detect.
+    </div>
+
+    <div class="ops-container">
+        
+        <div class="ops-panel attack">
+            <div class="ops-title">⚔️ Exploitation</div>
+            <a href="exploit-credential-harvesting.html" class="ops-link">Credential Harvesting Suite</a>
+            <a href="exploit-lateral-movement.html" class="ops-link">Lateral Movement Framework</a>
+            <a href="exploit-privilege-escalation.html" class="ops-link">Privilege Escalation Tools</a>
+            <a href="exploit-persistence.html" class="ops-link">Persistence Mechanisms</a>
+        </div>
+
+        <div class="ops-panel recon">
+            <div class="ops-title">🔍 Reconnaissance</div>
+            <a href="recon-domain-mapping.html" class="ops-link">Domain Enumeration (BloodHound)</a>
+            <a href="recon-network-scanning.html" class="ops-link">Network Discovery (Nmap)</a>
+            <a href="recon-service-enumeration.html" class="ops-link">Service Enumeration (SMB/LDAP)</a>
+            <a href="recon-vulnerability-scanning.html" class="ops-link">Vulnerability Assessment</a>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Active Capabilities</h2>
+    <div class="capabilities-grid">
+        
+        <a href="capability-domain-enumeration.html" class="cap-card">
+            <h3>🗺️ Domain Mapping (T1018)</h3>
+            <p>Automated ingestion of AD objects via SharpHound/BloodHound to identify attack paths.</p>
+            <span class="impact-badge">Target: Domain Admin Path</span>
+        </a>
+
+        <a href="capability-credential-harvesting.html" class="cap-card">
+            <h3>🔑 Credential Harvesting</h3>
+            <p>Impacket suite usage for AS-REP roasting, Kerberoasting, and dumping SAM/LSA secrets.</p>
+            <span class="impact-badge">Target: Valid Accounts</span>
+        </a>
+
+        <a href="capability-lateral-movement.html" class="cap-card">
+            <h3>🔀 Lateral Movement</h3>
+            <p>Remote execution via WMI, SMB (PSExec), and WinRM to pivot across the subnet.</p>
+            <span class="impact-badge">Target: Network Pivot</span>
+        </a>
+
+        <a href="capability-persistence.html" class="cap-card">
+            <h3>🔒 Persistence</h3>
+            <p>Establishing C2 channels and scheduled tasks to maintain access post-reboot.</p>
+            <span class="impact-badge">Target: Long-term Access</span>
+        </a>
+
+    </div>
+
+    <h2 class="section-title">Operational Documentation</h2>
+    <div class="docs-grid">
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Red Team Ops Manual</h4>
+                <p>Standard Operating Procedures for the lab.</p>
+            </div>
+            <div class="doc-icon">📄</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Tool Configuration Notes</h4>
+                <p>Custom C2 profiles and script adjustments.</p>
+            </div>
+            <div class="doc-icon">⚙️</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Attack Logs (Q4 2025)</h4>
+                <p>Archive of executed simulation logs.</p>
+            </div>
+            <div class="doc-icon">📊</div>
+        </a>
+    </div>
+
+    <h2 class="section-title">Techniques (MITRE ATT&CK)</h2>
+    <div class="mitre-grid">
+        
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1059.001</span>
+                <span class="severity critical">CRITICAL</span>
+            </div>
+            <div class="mitre-title">PowerShell Empire</div>
+            <div class="tool-tags">
+                <span class="tag">Empire</span>
+                <span class="tag">Starkiller</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1003.001</span>
+                <span class="severity critical">CRITICAL</span>
+            </div>
+            <div class="mitre-title">Credential Dumping</div>
+            <div class="tool-tags">
+                <span class="tag">Mimikatz</span>
+                <span class="tag">Impacket</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1021.002</span>
+                <span class="severity high">HIGH</span>
+            </div>
+            <div class="mitre-title">SMB/WinRM Pivot</div>
+            <div class="tool-tags">
+                <span class="tag">CrackMapExec</span>
+                <span class="tag">Evil-WinRM</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1547.001</span>
+                <span class="severity medium">MEDIUM</span>
+            </div>
+            <div class="mitre-title">Registry Persistence</div>
+            <div class="tool-tags">
+                <span class="tag">Reg</span>
+                <span class="tag">SharPersist</span>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="btn-group">
+        <a id="emailBtn" href="#" class="btn">Email Me</a>
+        <a href="https://www.linkedin.com/in/johnny-meintel-3a9280269/" class="btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+    <div class="uptime">
+        Lab Online: <span id="uptime">calculating...</span>
+    </div>
+</footer>
+
+<script>
+// Email Obfuscation
+document.addEventListener('DOMContentLoaded', function() {
+    var e = document.getElementById('emailBtn');
+    if (e) {
+        var u = 'johnny';
+        var d = 'johnnymeintel.com';
+        e.addEventListener('click', function(event) {
+            this.href = 'mailto:' + u + '@' + d;
+        });
+    }
+});
+
+// ESC to Home
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = 'index.html';
+});
+
+// Uptime
+const labStartDate = new Date('2024-11-27T08:00:00');
+function updateUptime() {
+    const now = new Date();
+    const diff = now - labStartDate;
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('uptime').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+setInterval(updateUptime, 1000);
+updateUptime();
+</script>
+
+</body>
+</html>
