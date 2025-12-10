@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johnny@cybersec ~ homelab.phase_one</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =================================================================
+           CSS VARIABLES - Updated for High Contrast / Low Translucency
+           ================================================================= */
+        :root {
+            --bg: #050a14;              /* Very dark blue/black background */
+            --card-bg: #0f172a;         /* Solid dark blue for cards - NO TRANSPARENCY */
+            --border: #1e293b;
+            
+            --cyan: #22d3ee;
+            --blue: #3b82f6;
+            --purple: #a855f7;
+            --red: #f43f5e;
+            --green: #10b981;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            /* Subtle grid pattern */
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           NAVIGATION
+           ================================================================= */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(5, 10, 20, 0.95); /* High opacity for nav */
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000;
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--cyan); 
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--cyan); }
+
+        /* =================================================================
+           HERO
+           ================================================================= */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--cyan), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .subtitle { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem; }
+        
+        .status-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-size: 0.9rem;
+        }
+
+        /* =================================================================
+           VULNERABILITY DASHBOARD (Centered & Solid)
+           ================================================================= */
+        .vuln-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-main);
+            font-size: 2rem;
+        }
+        
+        .vuln-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* This centers the blocks */
+            gap: 2rem;
+        }
+
+        .vuln-card {
+            background: var(--card-bg); /* Solid background */
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px; /* Limits width so they don't stretch too far */
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            
+            /* Top border accent */
+            border-top: 4px solid var(--red);
+        }
+
+        .vuln-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .vuln-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .vuln-icon { font-size: 1.5rem; }
+        
+        .vuln-title {
+            color: var(--red);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .vuln-list { list-style: none; }
+        
+        .vuln-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .vuln-list li::before {
+            content: "✕";
+            position: absolute;
+            left: 0;
+            color: var(--red);
+            font-weight: bold;
+        }
+
+        /* =================================================================
+           DOCUMENTATION GRID (Darker, Less Translucent)
+           ================================================================= */
+        .docs-section {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .doc-card {
+            background: var(--card-bg); /* Solid background */
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Border accents for different types */
+        .doc-card.writeup { border-left: 4px solid var(--cyan); }
+        .doc-card.repo { border-left: 4px solid var(--purple); }
+
+        .doc-card:hover {
+            transform: translateX(5px);
+            background: #16203a; /* Slightly lighter on hover */
+        }
+
+        .doc-content h3 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .doc-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .doc-icon {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+        
+        .doc-card:hover .doc-icon { opacity: 1; color: var(--cyan); }
+
+        /* =================================================================
+           FOOTER
+           ================================================================= */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.05);
+        }
+
+        .uptime {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .uptime span { color: var(--cyan); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .vuln-container { flex-direction: column; align-items: center; }
+            .vuln-card { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo">johnny@cybersec:~$ cd phaseone.html</a>
+    <a href="index.html" class="back-link">← Home</a>
+</nav>
+
+<header class="hero">
+    <h1>Phase One: Vulnerable Foundation</h1>
+    <div class="subtitle">Establishing the "Technical Debt" Environment:<br><br>
+                        My first goal was to create a simulated, scaled-down, vulnerable enterprise environment - domain controller, web server, database, SIEM, 
+                        and workstation. Every vulnerability introduced comes with real-world business justification and real-world consequences. 
+                        This was an opportunity for me to understand these common misconfigurations, and not just to avoid them or disable them.<br><br>
+                        View the Technical Analysis & Code below to see technical articles (Medium) and misconfiguration scripts (GitHub).
+    </div>
+    <div class="status-badge">✓ STATUS: COMPLETE</div>
+</header>
+
+<section class="vuln-section">
+    <h2 class="section-title">Active Risk Landscape</h2>
+    
+    <div class="vuln-container">
+        
+        <div class="vuln-card">
+            <div class="vuln-header">
+                <div class="vuln-icon">🏢</div>
+                <div class="vuln-title">DC01 Vulnerabilities</div>
+            </div>
+            <ul class="vuln-list">
+                <li>SMB Signing Disabled (NTLM Relay)</li>
+                <li>LDAP Signing Disabled</li>
+                <li>NTLMv1 Authentication Allowed</li>
+                <li>Reversible Encryption Enabled</li>
+                <li>Service Accounts with SPNs (Kerberoast)</li>
+                <li>No Pre-Auth (AS-REP Roast)</li>
+            </ul>
+        </div>
+
+        <div class="vuln-card">
+            <div class="vuln-header">
+                <div class="vuln-icon">💼</div>
+                <div class="vuln-title">MGR1 Vulnerabilities</div>
+            </div>
+            <ul class="vuln-list">
+                <li><strong>Auto-Logon Domain Admin</strong> (Registry)</li>
+                <li>DA Password in Cleartext</li>
+                <li>RDP Enabled / NLA Disabled</li>
+                <li>Windows Firewall Disabled</li>
+                <li>UAC Disabled (EnableLUA=0)</li>
+                <li>Event Logging Disabled</li>
+            </ul>
+        </div>
+
+        <div class="vuln-card">
+            <div class="vuln-header">
+                <div class="vuln-icon">🌐</div>
+                <div class="vuln-title">APP01 Vulnerabilities</div>
+            </div>
+            <ul class="vuln-list">
+                <li>IIS Directory Browsing Enabled</li>
+                <li>Verbose Error Messages</li>
+                <li><strong>DA App Pool Identity</strong></li>
+                <li>Everyone:Full Control on wwwroot</li>
+                <li>MySQL Default Credentials</li>
+                <li>Unpatched IIS Version</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2 class="section-title">Technical Analysis & Code</h2>
+    
+    <div class="docs-grid">
+
+        <a href="https://medium.com/@johnnymeintel/when-business-beats-best-practice-simulating-enterprise-technical-debt-05feb12d0e2b" class="doc-card writeup" target="_blank" rel="noopener noreferrer">
+            <div class="doc-content">
+                <h3>Writeup: Windows 11</h3>
+                <p>When Business Beats Best Practice</p>
+            </div>
+            <div class="doc-icon">🔗</div>
+        </a>
+
+        <a href="https://medium.com/@johnnymeintel/understanding-ad-attack-vectors-through-intentional-misconfiguration-f17525058cca" class="doc-card writeup" target="_blank" rel="noopener noreferrer">
+            <div class="doc-content">
+                <h3>Writeup: Active Directory</h3>
+                <p>Understanding AD Attack Vectors</p>
+            </div>
+            <div class="doc-icon">🔗</div>
+        </a>
+
+        <a href="https://medium.com/@johnnymeintel/iis-misconfigurations-mysql-exposure-and-the-path-to-domain-admin-14db9fbe9df8" class="doc-card writeup" target="_blank" rel="noopener noreferrer">
+            <div class="doc-content">
+                <h3>Writeup: Web server + DB</h3>
+                <p>IIS Misconfigurations & Path to DA</p>
+            </div>
+            <div class="doc-icon">🔗</div>
+        </a>
+
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/02-documentation/MGR1.md" class="doc-card repo" target="_blank" rel="noopener noreferrer">
+            <div class="doc-content">
+                <h3>MGR1 Configuration Detail</h3>
+                <p>Vulnerable executive workstation setup.</p>
+            </div>
+            <div class="doc-icon">💻</div>
+        </a>
+
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/02-documentation/DC01.md" class="doc-card repo" target="_blank" rel="noopener noreferrer">
+            <div class="doc-content">
+                <h3>DC01 Configuration Detail</h3>
+                <p>Domain Controller policy configurations.</p>
+            </div>
+            <div class="doc-icon">💻</div>
+        </a>
+
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/02-documentation/APP01.md" class="doc-card repo" target="_blank" rel="noopener noreferrer">
+            <div class="doc-content">
+                <h3>APP01 Configuration Detail</h3>
+                <p>Vulnerable web server and database.</p>
+            </div>
+            <div class="doc-icon">💻</div>
+        </a>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="btn-group">
+        <a id="emailBtn" href="#" class="btn">Email Me</a>
+        <a href="https://linkedin.com/in/johnny-meintel-3a9280269" class="btn" target="_blank">LinkedIn</a>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+    <div class="uptime">
+        Lab Online: <span id="uptime">calculating...</span>
+    </div>
+</footer>
+
+<script>
+// Email Obfuscation
+document.addEventListener('DOMContentLoaded', function() {
+    var e = document.getElementById('emailBtn');
+    if (e) {
+        var u = 'johnny';
+        var d = 'johnnymeintel.com';
+        e.addEventListener('click', function(event) {
+            this.href = 'mailto:' + u + '@' + d;
+        });
+    }
+});
+
+// ESC to Home
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = 'index.html';
+});
+
+// Uptime
+const labStartDate = new Date('2025-11-27T08:00:00');
+function updateUptime() {
+    const now = new Date();
+    const diff = now - labStartDate;
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('uptime').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+setInterval(updateUptime, 1000);
+updateUptime();
+</script>
+
+</body>
+</html>
