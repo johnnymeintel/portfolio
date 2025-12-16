@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johnny@cybersec ~ SIEM01 | Security Operations Center</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =================================================================
+           CSS VARIABLES - SIEM Specific Theme (Blue/Defense Identity)
+           ================================================================= */
+        :root {
+            /* Background: Deep Midnight Blue */
+            --bg: #0a0e12;
+            
+            /* Solid Card Background */
+            --card-bg: #151b23;
+            --border: #2d3454;
+            
+            /* Accents */
+            --primary: #0ea5e9;         /* Electric Blue */
+            --primary-glow: #38bdf8;
+            
+            --purple: #8b5cf6;          /* Hunting/Advanced */
+            --cyan: #22d3ee;
+            --green: #10b981;           /* Status Good */
+            --red: #ef4444;             /* Alerts */
+            --orange: #f97316;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            /* Subtle blue grid pattern */
+            background-image:
+                linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           NAVIGATION
+           ================================================================= */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(10, 14, 18, 0.95);
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000;
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--primary); 
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* =================================================================
+           HERO SECTION
+           ================================================================= */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 0.5rem;
+            /* Defense Blue Gradient */
+            background: linear-gradient(to right, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .role { 
+            color: var(--text-muted); 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem; 
+            font-weight: 300;
+        }
+        
+        .meta-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .meta-grid strong { color: var(--primary); }
+        .status-badge { 
+            color: var(--green); 
+            font-weight: 700; 
+            border: 1px solid var(--green); 
+            padding: 0.2rem 0.5rem; 
+            border-radius: 4px; 
+            display: inline-block; 
+        }
+
+        /* =================================================================
+           CONTENT LAYOUT
+           ================================================================= */
+        .content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            display: table; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .summary-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 4rem auto; 
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* =================================================================
+           ANALYSIS / DETECTION PANELS
+           ================================================================= */
+        .ops-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .ops-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .ops-panel.analysis { border-top: 4px solid var(--primary); }
+        .ops-panel.detection { border-top: 4px solid var(--purple); }
+
+        .ops-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .ops-panel.analysis .ops-title { color: var(--primary); }
+        .ops-panel.detection .ops-title { color: var(--purple); }
+
+        .ops-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .ops-panel.analysis .ops-link:hover {
+            background: rgba(14, 165, 233, 0.1);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .ops-panel.detection .ops-link:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--purple);
+            transform: translateX(5px);
+        }
+
+        /* =================================================================
+           MONITORING COVERAGE GRID - WITH ALIGNED TARGET BADGES
+           ================================================================= */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        /* Capability card - flexbox for alignment */
+        .cap-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--primary);
+            min-height: 280px;
+        }
+
+        /* Clean shadow on hover */
+        .cap-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--cyan);
+        }
+
+        /* Capability title - fixed height for alignment */
+        .cap-card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            min-height: 2.6rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Capability description - grows to fill space, brighter text */
+        .cap-card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* Target badge - aligned at bottom */
+        .impact-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: auto;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+
+        /* =================================================================
+           OPERATIONAL DOCUMENTATION (Writeups)
+           ================================================================= */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .doc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .doc-card:hover {
+            border-color: var(--primary);
+            background: rgba(14, 165, 233, 0.05);
+            transform: translateX(5px);
+        }
+
+        .doc-info h4 {
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .doc-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .doc-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        /* =================================================================
+           TECHNIQUE CARDS (MITRE/D3FEND)
+           ================================================================= */
+        .mitre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mitre-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .mitre-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .mitre-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .mitre-id {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .severity {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .severity.critical { background: var(--red); color: white; }
+        .severity.high { background: var(--orange); color: white; }
+        .severity.medium { background: var(--primary); color: white; }
+
+        .mitre-title {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* =================================================================
+           FOOTER
+           ================================================================= */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .uptime {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .uptime span { color: var(--primary); }
+
+        /* =================================================================
+           RESPONSIVE DESIGN
+           ================================================================= */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1rem 3rem; }
+            h1 { font-size: 3rem; }
+            .content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">johnny@cybersec:<span style="color:#10b981">~$</span> cd siem01.html</div>
+    <a href="index.html" class="back-link">← Home</a>
+</nav>
+
+<header class="hero">
+    <h1>SIEM01</h1>
+    <div class="role">Security Operations & Monitoring</div>
+    
+    <div class="meta-grid">
+        <div><strong>OS:</strong> Ubuntu Server 24.04 LTS</div>
+        <div><strong>Platform:</strong> Splunk Enterprise 9.x</div>
+        <div><strong>IP:</strong> 192.168.56.100</div>
+        <div><strong>User:</strong> jmeintel (root)</div>
+        <div><strong>Status:</strong> <span class="status-badge">MONITORING</span></div>
+    </div>
+</header>
+
+<div class="content">
+
+    <div class="summary-text">
+        I started by learning Splunk and Windows Event (Sysmon) basics. I ensured all the vulnerabilities I introduced were detected, so that I could understand how
+        to identify common misconfigurations. After I began creating the remediation strategy for the compromised environment, 
+        I learned how to improve Mean Time To Respond to future attacks. 
+    </div>
+
+    <div class="ops-container">
+        
+        <div class="ops-panel analysis">
+            <div class="ops-title">🔍 Analysis & Hunting</div>
+            <a href="" class="ops-link">Credential Theft Detection</a>
+            <a href="" class="ops-link">Lateral Movement Tracking</a>
+            <a href="" class="ops-link">Privilege Escalation Alerts</a>
+            <a href="" class="ops-link">Threat Hunting Workflows</a>
+        </div>
+
+        <div class="ops-panel detection">
+            <div class="ops-title">🛡️ Rules & Detection</div>
+            <a href="" class="ops-link">Correlation Search Rules</a>
+            <a href="" class="ops-link">Automated Alert Configuration</a>
+            <a href="" class="ops-link">Security Dashboard Design</a>
+            <a href="" class="ops-link">Advanced SPL Queries</a>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Monitoring Coverage</h2>
+    <div class="capabilities-grid">
+        
+        <!-- DC01 Vulnerabilities -->
+        <a href="" class="cap-card">
+            <h3>🎫 Kerberoasting (T1558.003)</h3>
+            <p>Detection of Event 4769 TGS requests with RC4 encryption (0x17) targeting service accounts with SPNs.</p>
+            <span class="impact-badge">Target: Weak Service Accounts</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🔓 AS-REP Roasting (T1558.004)</h3>
+            <p>Monitoring Event 4768 for accounts with pre-authentication disabled allowing offline password cracking.</p>
+            <span class="impact-badge">Target: No Pre-Auth Accounts</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🔄 DCSync Attack (T1003.006)</h3>
+            <p>Alert on Event 4662 Directory Services Replication from non-DC hosts leveraging excessive permissions.</p>
+            <span class="impact-badge">Target: Domain Credential Dumping</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>📝 SMB Relay (T1557.001)</h3>
+            <p>Detection of unsigned SMB authentication attempts and NTLM coercion patterns via Event 4624 Type 3.</p>
+            <span class="impact-badge">Target: SMB Signing Disabled</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🌊 Password Spraying (T1110.003)</h3>
+            <p>Correlation of Event 4625 failed logon attempts across multiple accounts from single source without lockout.</p>
+            <span class="impact-badge">Target: Weak Password Policy</span>
+        </a>
+
+        <!-- MGR1 Vulnerabilities -->
+        <a href="" class="cap-card">
+            <h3>🔑 Registry Credential Access (T1552.002)</h3>
+            <p>Alert on Sysmon Event 13 registry modifications to Winlogon keys containing cleartext credentials.</p>
+            <span class="impact-badge">Target: Auto-Logon Credentials</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🚫 UAC Bypass (T1548.002)</h3>
+            <p>Detection of registry changes to EnableLUA and ConsentPromptBehaviorAdmin via Event 4657.</p>
+            <span class="impact-badge">Target: Disabled Security Controls</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🌐 RDP Lateral Movement (T1021.001)</h3>
+            <p>Monitoring Event 4624 Type 10 (RemoteInteractive) logons from unexpected sources without NLA.</p>
+            <span class="impact-badge">Target: Unrestricted RDP Access</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🎭 Token Impersonation (T1134)</h3>
+            <p>Sysmon Event 10 correlation detecting ProcessAccess to SYSTEM processes from medium-integrity contexts.</p>
+            <span class="impact-badge">Target: Privilege Escalation</span>
+        </a>
+
+        <!-- APP01 Vulnerabilities -->
+        <a href="" class="cap-card">
+            <h3>📄 Credentials in Files (T1552.001)</h3>
+            <p>Detection of web.config, config.php access patterns and file reads containing cleartext credentials.</p>
+            <span class="impact-badge">Target: Configuration Files</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>📂 Information Disclosure (T1592)</h3>
+            <p>IIS log analysis detecting directory enumeration and HTTP 200 responses for sensitive file extensions.</p>
+            <span class="impact-badge">Target: Directory Browsing Enabled</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🐚 Web Shell Detection (T1505.003)</h3>
+            <p>Monitoring w3wp.exe spawning cmd.exe/powershell.exe or unusual parent-child process relationships.</p>
+            <span class="impact-badge">Target: Web Application RCE</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🔐 Database Authentication (T1078.001)</h3>
+            <p>MySQL authentication logs correlation detecting brute force attempts and root access from non-localhost.</p>
+            <span class="impact-badge">Target: Remote Database Access</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>🔄 Pass-the-Hash (T1550.002)</h3>
+            <p>Detection of LogonType 3 (Network) anomalies with NTLM authentication from compromised accounts.</p>
+            <span class="impact-badge">Target: Credential Reuse</span>
+        </a>
+
+        <a href="" class="cap-card">
+            <h3>💾 LSASS Memory Access (T1003.001)</h3>
+            <p>Alerting on non-standard processes requesting Handle access to lsass.exe via Sysmon Event 10.</p>
+            <span class="impact-badge">Target: Mimikatz / Credential Dumping</span>
+        </a>
+
+    </div>
+
+    <h2 class="section-title">Operational Documentation</h2>
+    <div class="docs-grid">
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Coming Soon</h4>
+                <p>Coming Soon</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Coming Soon</h4>
+                <p>Coming Soon</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Coming Soon</h4>
+                <p>Coming Soon</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Coming Soon</h4>
+                <p>Coming Soon</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Coming Soon</h4>
+                <p>Coming Soon</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+        <a href="#" class="doc-card">
+            <div class="doc-info">
+                <h4>Coming Soon</h4>
+                <p>Coming Soon</p>
+            </div>
+            <div class="doc-icon">📝</div>
+        </a>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="btn-group">
+        <a id="emailBtn" href="#" class="btn">Email Me</a>
+        <a href="https://linkedin.com/in/johnny-meintel-3a9280269" class="btn" target="_blank">LinkedIn</a>
+        <a href="https://github.com/johnnymeintel/johnnycybersec" class="btn" target="_blank">GitHub</a>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+    <div class="uptime">
+        Lab Online: <span id="uptime">calculating...</span>
+    </div>
+</footer>
+
+<script>
+(function() {
+    'use strict';
+
+    // Email Obfuscation
+    document.addEventListener('DOMContentLoaded', function() {
+        var e = document.getElementById('emailBtn');
+        if (e) {
+            var u = 'johnny';
+            var d = 'johnnymeintel.com';
+            e.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = 'mailto:' + u + '@' + d;
+            });
+        }
+    });
+
+    // ESC to Home
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') window.location.href = 'index.html';
+    });
+
+    // Uptime Calculator
+    const labStartDate = new Date('2025-11-27T08:00:00');
+    function updateUptime() {
+        const now = new Date();
+        const diff = now - labStartDate;
+        const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('uptime').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    setInterval(updateUptime, 1000);
+    updateUptime();
+})();
+</script>
+
+</body>
+</html>

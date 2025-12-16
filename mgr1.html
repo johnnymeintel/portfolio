@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johnny@cybersec ~ MGR1 | Executive Workstation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =================================================================
+           CSS VARIABLES - MGR1 Specific Theme (Neutral Business)
+           ================================================================= */
+        :root {
+            /* Background: Professional Dark Slate */
+            --bg: #0a0e12;
+            
+            /* Solid Card Background */
+            --card-bg: #151b23;
+            --border: #2d3454;
+            
+            /* Accents - Neutral Business Palette (Brighter) */
+            --primary: #94a3b8;         /* Lighter Slate - Better Contrast */
+            --primary-light: #cbd5e1;
+            
+            --cyan: #22d3ee;
+            --blue: #3b82f6;
+            --red: #ef4444;
+            --green: #10b981;
+            --orange: #f97316;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            /* Subtle neutral grid */
+            background-image:
+                linear-gradient(rgba(100, 116, 139, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 116, 139, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           NAVIGATION
+           ================================================================= */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(10, 14, 18, 0.95);
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000;
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--primary); 
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* =================================================================
+           HERO SECTION
+           ================================================================= */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 0.5rem;
+            /* Neutral Business Gradient */
+            background: linear-gradient(to right, var(--primary-light), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .role { 
+            color: var(--text-muted); 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem; 
+            font-weight: 300;
+        }
+        
+        .meta-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .meta-grid strong { color: var(--primary); }
+        .risk-badge { color: var(--red); font-weight: 700; }
+
+        /* =================================================================
+           CONTENT LAYOUT
+           ================================================================= */
+        .content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .summary-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 4rem auto;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* =================================================================
+           ATTACK / DEFENSE PANELS
+           ================================================================= */
+        .ops-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .ops-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .ops-panel.attack { border-top: 4px solid var(--red); }
+        .ops-panel.defense { border-top: 4px solid var(--blue); }
+
+        .ops-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .ops-panel.attack .ops-title { color: var(--red); }
+        .ops-panel.defense .ops-title { color: var(--blue); }
+
+        .ops-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .ops-panel.attack .ops-link:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--red);
+            transform: translateX(5px);
+        }
+
+        .ops-panel.defense .ops-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--blue);
+            transform: translateX(5px);
+        }
+
+        /* =================================================================
+           CRITICAL FINDINGS GRID - WITH ALIGNED IMPACT BADGES
+           ================================================================= */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        /* Finding card - flexbox for alignment */
+        .finding-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--red);
+            min-height: 280px;
+        }
+
+        /* Clean shadow on hover */
+        .finding-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        /* Finding title - fixed height for alignment */
+        .finding-card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            min-height: 2.6rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Finding description - grows to fill space, brighter text */
+        .finding-card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* Inline code in findings */
+        .finding-card code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Impact badge - aligned at bottom */
+        .impact-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: auto;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+
+        /* =================================================================
+           TECHNIQUE CARDS (MITRE)
+           ================================================================= */
+        .mitre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mitre-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .mitre-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .mitre-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .mitre-id {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            background: rgba(100, 116, 139, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .severity {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .severity.critical { background: var(--red); color: white; }
+        .severity.high { background: var(--orange); color: white; }
+        .severity.medium { background: var(--blue); color: white; }
+
+        .mitre-title {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* =================================================================
+           FOOTER
+           ================================================================= */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(100, 116, 139, 0.05);
+        }
+
+        .uptime {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .uptime span { color: var(--primary); }
+
+        /* =================================================================
+           RESPONSIVE DESIGN
+           ================================================================= */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1rem 3rem; }
+            h1 { font-size: 3rem; }
+            .content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">johnny@cybersec:<span style="color:#10b981">~$</span> cd mgr1.html</div>
+    <a href="index.html" class="back-link">← Home</a>
+</nav>
+
+<header class="hero">
+    <h1>MGR1</h1>
+    <div class="role">Executive Workstation (Target)</div>
+    
+    <div class="meta-grid">
+        <div><strong>OS:</strong> Windows 11 Pro 24H2</div>
+        <div><strong>Domain:</strong> cjcs.local (Domain-Joined)</div>
+        <div><strong>IP:</strong> 192.168.56.11</div>
+        <div><strong>User:</strong> marcus_chen (Domain Admin)</div>
+        <div><strong>Status:</strong> <span class="risk-badge">VULNERABLE</span></div>
+    </div>
+</header>
+
+<div class="content">
+
+    <div class="summary-text">
+        MGR1 represents a worst-case scenario for enterprise security - Domain Admin credentials in cleartext registry, disabled security controls, 
+        high-risk services without authentication barriers, the works. This will allow me to start with basic attack methodologies and improve my red team capabilities
+        as I introduce new detection mechanisms. 
+    </div>
+
+    <div class="ops-container">
+        
+        <div class="ops-panel attack">
+            <div class="ops-title">⚔️ Attack Simulations</div>
+            <a href="" class="ops-link">Registry Credential Extraction</a>
+            <a href="" class="ops-link">Token Impersonation Attacks</a>
+            <a href="" class="ops-link">UAC Bypass Techniques</a>
+            <a href="" class="ops-link">Lateral Movement via RDP</a>
+        </div>
+
+        <div class="ops-panel defense">
+            <div class="ops-title">🛡️ Detection & Remediation</div>
+            <a href="" class="ops-link">Registry Monitoring Queries</a>
+            <a href="" class="ops-link">Privilege Escalation Detection</a>
+            <a href="" class="ops-link">Hardening Auto-Logon Systems</a>
+            <a href="" class="ops-link">RDP Security Best Practices</a>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Critical Findings</h2>
+    <div class="findings-grid">
+        
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/01-configurations/mgr1-domain-admin-autologon.ps1" class="finding-card" target="_blank">
+            <h3>🔑 Auto-Logon DA Credentials</h3>
+            <p>marcus_chen (Domain Admin) password stored in cleartext registry via <code>HKLM...Winlogon</code>.</p>
+            <span class="impact-badge">Impact: Domain Compromise</span>
+        </a>
+
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/01-configurations/mgr1-disable-security-controls.ps1" class="finding-card" target="_blank">
+            <h3>🚫 UAC Disabled</h3>
+            <p><code>EnableLUA = 0</code> ensures every process runs with full administrator token silently.</p>
+            <span class="impact-badge">Impact: Silent PrivEsc</span>
+        </a>
+
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/01-configurations/mgr1-rdp-misconfigurations.ps1" class="finding-card" target="_blank">
+            <h3>🌐 Unrestricted Remote Access</h3>
+            <p>RDP (3389) and SMB (445) exposed with no network-level controls.</p>
+            <span class="impact-badge">Impact: Lateral Movement</span>
+        </a>
+
+    </div>
+
+    <h2 class="section-title">Techniques (MITRE ATT&CK)</h2>
+    <div class="mitre-grid">
+        
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1552.002</span>
+                <span class="severity critical">CRITICAL</span>
+            </div>
+            <div class="mitre-title">Credentials in Registry</div>
+            <div class="tool-tags">
+                <span class="tag">reg.exe</span>
+                <span class="tag">PowerShell</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1548.002</span>
+                <span class="severity high">HIGH</span>
+            </div>
+            <div class="mitre-title">Bypass UAC</div>
+            <div class="tool-tags">
+                <span class="tag">Registry Mod</span>
+                <span class="tag">Token Manip</span>
+            </div>
+        </a>
+
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1021</span>
+                <span class="severity high">HIGH</span>
+            </div>
+            <div class="mitre-title">Remote Services</div>
+            <div class="tool-tags">
+                <span class="tag">nmap</span>
+                <span class="tag">Hydra</span>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="btn-group">
+        <a id="emailBtn" href="#" class="btn">Email Me</a>
+        <a href="https://linkedin.com/in/johnny-meintel-3a9280269" class="btn" target="_blank">LinkedIn</a>
+        <a href="https://github.com/johnnymeintel/johnnycybersec" class="btn" target="_blank">GitHub</a>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+    <div class="uptime">
+        Lab Online: <span id="uptime">calculating...</span>
+    </div>
+</footer>
+
+<script>
+(function() {
+    'use strict';
+
+    // Email Obfuscation
+    document.addEventListener('DOMContentLoaded', function() {
+        var e = document.getElementById('emailBtn');
+        if (e) {
+            var u = 'johnny';
+            var d = 'johnnymeintel.com';
+            e.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = 'mailto:' + u + '@' + d;
+            });
+        }
+    });
+
+    // ESC to Home
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') window.location.href = 'index.html';
+    });
+
+    // Uptime Calculator
+    const labStartDate = new Date('2025-11-27T08:00:00');
+    function updateUptime() {
+        const now = new Date();
+        const diff = now - labStartDate;
+        const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('uptime').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    setInterval(updateUptime, 1000);
+    updateUptime();
+})();
+</script>
+
+</body>
+</html>

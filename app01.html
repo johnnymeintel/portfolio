@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johnny@cybersec ~ APP01 | Web & Database Server</title>
+    
+    <!-- Google Fonts: JetBrains Mono for terminal/code, Inter for body text -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ====================================================================
+           CSS VARIABLES - APP01 Theme (Modern Tech Green)
+           ====================================================================
+           Color scheme inspired by Spotify, Android, modern tech interfaces
+           Primary: Sleek tech green (#1db954) - professional, trendy
+           Background: Pure dark with subtle cool undertone
+           ==================================================================== */
+        :root {
+            /* Background Colors - Clean dark slate */
+            --bg: #0a0e12;              /* Deep blue-black (tech aesthetic) */
+            --card-bg: #151b23;         /* Slate card background */
+            --border: #1e2936;          /* Cool gray-blue border */
+            
+            /* Primary Colors - Modern tech green palette */
+            --primary: #1db954;         /* Spotify green - main accent */
+            --primary-bright: #1ed760;  /* Brighter for hover */
+            --primary-dark: #169c46;    /* Darker for pressed states */
+            
+            /* Status Colors */
+            --cyan: #00d9ff;            /* Modern cyan accent */
+            --blue: #3b82f6;            /* Info/defense blue */
+            --red: #ef4444;             /* Critical/attack red */
+            --yellow: #f59e0b;          /* Warning amber */
+            --orange: #fb923c;          /* High severity orange */
+            
+            /* Text Colors */
+            --text-main: #f1f5f9;       /* Clean white-gray */
+            --text-muted: #94a3b8;      /* Slate gray */
+            --text-dim: #64748b;        /* Dimmed slate */
+        }
+        
+        /* CSS Reset */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        /* Body - Modern tech style grid background */
+        body {
+            background: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            /* Subtle cool-toned grid pattern */
+            background-image:
+                linear-gradient(rgba(29, 185, 84, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(29, 185, 84, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        /* ====================================================================
+           NAVIGATION BAR
+           ==================================================================== */
+        nav {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0;
+            background: rgba(10, 14, 10, 0.95);
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000;
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Terminal-style logo */
+        .logo { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--primary); 
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        
+        /* Back navigation link */
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover { 
+            color: var(--primary); 
+        }
+
+        /* ====================================================================
+           HERO SECTION
+           ==================================================================== */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        /* Main heading - modern gradient effect */
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 0.5rem;
+            /* Modern tech green gradient with cyan accent */
+            background: linear-gradient(135deg, var(--primary-bright), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        
+        /* Role subtitle */
+        .role { 
+            color: var(--text-muted); 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem; 
+            font-weight: 300;
+        }
+        
+        /* VM metadata display */
+        .meta-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-dim);
+        }
+        
+        .meta-grid strong { 
+            color: var(--primary); 
+        }
+        
+        /* Risk status badge */
+        .risk-badge { 
+            color: var(--red); 
+            font-weight: 700; 
+            text-transform: uppercase;
+        }
+
+        /* ====================================================================
+           CONTENT LAYOUT
+           ==================================================================== */
+        .content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Section titles */
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            display: table; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Summary text block */
+        .summary-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 4rem auto; 
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* ====================================================================
+           ATTACK / DEFENSE PANELS
+           ==================================================================== */
+        .ops-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        /* Operations panel card */
+        .ops-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Attack panel - red accent */
+        .ops-panel.attack { 
+            border-top: 4px solid var(--red);
+        }
+        
+        .ops-panel.attack:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Defense panel - blue accent */
+        .ops-panel.defense { 
+            border-top: 4px solid var(--blue);
+        }
+        
+        .ops-panel.defense:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Panel title */
+        .ops-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .ops-panel.attack .ops-title { 
+            color: var(--red); 
+        }
+        
+        .ops-panel.defense .ops-title { 
+            color: var(--blue); 
+        }
+
+        /* Operations link */
+        .ops-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(29, 185, 84, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Attack link hover - red emphasis */
+        .ops-panel.attack .ops-link:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--red);
+            transform: translateX(5px);
+        }
+
+        /* Defense link hover - blue emphasis */
+        .ops-panel.defense .ops-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--blue);
+            transform: translateX(5px);
+        }
+
+        /* ====================================================================
+           CRITICAL FINDINGS GRID
+           ==================================================================== */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        /* Finding card */
+        .finding-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--red);
+            min-height: 280px;
+        }
+
+        /* Finding card hover - clean shadow */
+        .finding-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        /* Finding title */
+        .finding-card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Finding description - grows to fill space */
+        .finding-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* Inline code in findings */
+        .finding-card code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Impact severity badge - aligned at bottom */
+        .impact-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: auto;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+
+        /* ====================================================================
+           MITRE ATT&CK TECHNIQUE CARDS
+           ==================================================================== */
+        .mitre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* MITRE technique card */
+        .mitre-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .mitre-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* MITRE card header with ID and severity */
+        .mitre-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        /* MITRE technique ID badge */
+        .mitre-id {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            background: rgba(29, 185, 84, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        /* Severity badge styling */
+        .severity {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .severity.critical { 
+            background: var(--red); 
+            color: white; 
+        }
+        
+        .severity.high { 
+            background: var(--orange); 
+            color: white; 
+        }
+        
+        .severity.medium { 
+            background: var(--blue); 
+            color: white; 
+        }
+
+        /* MITRE technique title */
+        .mitre-title {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Tool tags container */
+        .tool-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Individual tool tag */
+        .tag {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(29, 185, 84, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ====================================================================
+           FOOTER
+           ==================================================================== */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        /* Button group container */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* Button styling */
+        .btn {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(29, 185, 84, 0.1);
+        }
+
+        /* Uptime display */
+        .uptime {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        
+        .uptime span { 
+            color: var(--primary); 
+            font-weight: 600;
+        }
+
+        /* ====================================================================
+           RESPONSIVE DESIGN
+           ==================================================================== */
+        @media (max-width: 768px) {
+            .hero { 
+                padding: 6rem 1rem 3rem; 
+            }
+            
+            h1 { 
+                font-size: 3rem; 
+            }
+            
+            .content { 
+                padding: 1rem; 
+            }
+            
+            .ops-container,
+            .findings-grid,
+            .mitre-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .role {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ====================================================================
+     NAVIGATION
+     ==================================================================== -->
+<nav>
+    <div class="logo">johnny@cybersec:<span style="color:var(--primary)">~$</span> cd app01.html</div>
+    <a href="index.html" class="back-link">← Home</a>
+</nav>
+
+<!-- ====================================================================
+     HERO SECTION
+     ==================================================================== -->
+<header class="hero">
+    <h1>APP01</h1>
+    <div class="role">Web Application Server</div>
+    
+    <!-- VM Metadata -->
+    <div class="meta-grid">
+        <div><strong>OS:</strong> Windows Server 2022</div>
+        <div><strong>Role:</strong> IIS Web Server + MySQL Database</div>
+        <div><strong>IP:</strong> 192.168.56.4</div>
+        <div><strong>Domain:</strong> cjcs.local</div>
+        <div><strong>Status:</strong> <span class="risk-badge">EXPOSED</span></div>
+    </div>
+</header>
+
+<!-- ====================================================================
+     MAIN CONTENT
+     ==================================================================== -->
+<div class="content">
+
+    <!-- Summary Description -->
+    <div class="summary-text">
+        APP01 hosts a minimal IIS web application and MySQL database. While modest in scope, it remains are the primary entry point for attackers 
+        due to often misconfigured web permissions and unpatched services. Once compromised, it becomes a prime method of lateral movement to the domain controller.
+    </div>
+
+    <!-- ====================================================================
+         ATTACK & DEFENSE OPERATIONS
+         ==================================================================== -->
+    <div class="ops-container">
+        
+        <!-- Attack Simulations Panel -->
+        <div class="ops-panel attack">
+            <div class="ops-title">⚔️ Attack Simulations</div>
+            <a href="" class="ops-link">Directory Enumeration / Browsing</a>
+            <a href="" class="ops-link">MySQL Default Credentials</a>
+            <a href="" class="ops-link">Web Shell Upload (RCE)</a>
+            <a href="" class="ops-link">App Pool Identity PrivEsc</a>
+        </div>
+
+        <!-- Defense & Remediation Panel -->
+        <div class="ops-panel defense">
+            <div class="ops-title">🛡️ Detection & Remediation</div>
+            <a href="" class="ops-link">Hardening IIS Configurations</a>
+            <a href="" class="ops-link">Securing MySQL Instances</a>
+            <a href="" class="ops-link">File Integrity Monitoring (FIM)</a>
+            <a href="" class="ops-link">Service Account Least Privilege</a>
+        </div>
+
+    </div>
+
+    <!-- ====================================================================
+         CRITICAL FINDINGS
+         ==================================================================== -->
+    <h2 class="section-title">Critical Findings</h2>
+    <div class="findings-grid">
+        
+        <!-- Finding 1: Directory Browsing -->
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/01-configurations/app01-iis-misconfigurations.ps1" class="finding-card" target="_blank">
+            <h3>📂 Directory Browsing Enabled</h3>
+            <p>IIS Directory Browsing is enabled, allowing attackers to map the entire web root structure and discover sensitive files without authentication.</p>
+            <span class="impact-badge">Impact: Information Disclosure</span>
+        </a>
+
+        <!-- Finding 2: Domain Admin App Pool -->
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/01-configurations/app01-iis-misconfigurations.ps1" class="finding-card" target="_blank">
+            <h3>👑 Domain Admin App Pool</h3>
+            <p>The IIS Application Pool runs as a Domain Admin service account (<code>marcus_chen</code>), providing immediate domain compromise via web shell.</p>
+            <span class="impact-badge">Impact: Instant Domain Admin</span>
+        </a>
+
+        <!-- Finding 4: MySQL Root Access -->
+        <a href="https://github.com/johnnymeintel/johnnycybersec/blob/main/01-phase-one-vulnerable-foundation/01-configurations/app01-mysql-misconfigurations.sh" class="finding-card" target="_blank">
+            <h3>🛢️ MySQL Root Exposed</h3>
+            <p>MySQL is listening on all interfaces (0.0.0.0) with root accessible via weak password (<code>MySQL123!</code>).</p>
+            <span class="impact-badge">Impact: Data Exfiltration</span>
+        </a>
+
+    </div>
+
+    <!-- ====================================================================
+         MITRE ATT&CK TECHNIQUES
+         ==================================================================== -->
+    <h2 class="section-title">Techniques (MITRE ATT&CK)</h2>
+    <div class="mitre-grid">
+
+        <!-- Technique 1: File Discovery -->
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1083</span>
+                <span class="severity medium">MEDIUM</span>
+            </div>
+            <div class="mitre-title">File and Directory Discovery</div>
+            <div class="tool-tags">
+                <span class="tag">DirBuster</span>
+                <span class="tag">Gobuster</span>
+                <span class="tag">Feroxbuster</span>
+            </div>
+        </a>
+        
+        <!-- Technique 2: Web Shell -->
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1505.003</span>
+                <span class="severity critical">CRITICAL</span>
+            </div>
+            <div class="mitre-title">Server Software Component: Web Shell</div>
+            <div class="tool-tags">
+                <span class="tag">ChinaChopper</span>
+                <span class="tag">aspx_shell</span>
+                <span class="tag">Weevely</span>
+            </div>
+        </a>
+
+        <!-- Technique 3: Exploit Public Application -->
+        <a href="#" class="mitre-card">
+            <div class="mitre-header">
+                <span class="mitre-id">T1190</span>
+                <span class="severity high">HIGH</span>
+            </div>
+            <div class="mitre-title">Exploit Public-Facing Application</div>
+            <div class="tool-tags">
+                <span class="tag">Burp Suite</span>
+                <span class="tag">SQLMap</span>
+                <span class="tag">Nikto</span>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- ====================================================================
+     FOOTER
+     ==================================================================== -->
+<footer class="footer">
+    <div class="btn-group">
+        <a id="emailBtn" href="#" class="btn">Email Me</a>
+        <a href="https://linkedin.com/in/johnny-meintel-3a9280269" class="btn" target="_blank">LinkedIn</a>
+        <a href="https://github.com/johnnymeintel/johnnycybersec" class="btn" target="_blank">GitHub</a>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+    <div class="uptime">
+        Lab Online: <span id="uptime">calculating...</span>
+    </div>
+</footer>
+
+<!-- ====================================================================
+     JAVASCRIPT
+     ==================================================================== -->
+<script>
+    'use strict';
+    
+    // ====================================================================
+    // SECURE EMAIL OBFUSCATION
+    // ====================================================================
+    // Prevents email harvesting while maintaining functionality
+    
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailButton = document.getElementById('emailBtn');
+            
+            if (emailButton) {
+                // Email components - obfuscated
+                const username = 'johnny';
+                const domain = 'johnnymeintel.com';
+                
+                // Construct mailto on click
+                emailButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    window.location.href = 'mailto:' + username + '@' + domain;
+                });
+            }
+        });
+    })();
+
+    // ====================================================================
+    // KEYBOARD SHORTCUTS
+    // ====================================================================
+    // ESC key returns to home page
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.location.href = 'index.html';
+        }
+    });
+
+    // ====================================================================
+    // LAB UPTIME CALCULATOR
+    // ====================================================================
+    // Displays time since lab went online
+    
+    (function() {
+        // Lab start date - change this to your actual lab start date
+        const labStartDate = new Date('2025-11-27T08:00:00');
+        
+        function updateUptime() {
+            const now = new Date();
+            const diff = now - labStartDate;
+            
+            // Calculate time components
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Update display
+            const uptimeElement = document.getElementById('uptime');
+            if (uptimeElement) {
+                uptimeElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }
+        
+        // Update every second
+        setInterval(updateUptime, 1000);
+        
+        // Initial update
+        updateUptime();
+    })();
+</script>
+
+</body>
+</html>
