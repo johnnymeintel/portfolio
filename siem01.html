@@ -450,9 +450,47 @@
 </head>
 <body>
 
+<!-- Replace your current nav section with this -->
 <nav>
-    <div class="logo">johnny@cybersec:<span style="color:#10b981">~$</span> cd siem01.html</div>
-    <a href="index.html" class="back-link">← Home</a>
+    <a href="index.html" class="logo">johnny@cybersec:~$</a>
+    
+    <div style="display: flex; align-items: center; gap: 2rem;">
+        <!-- Dropdown for Homelab Phases -->
+        <div style="position: relative; display: inline-block;">
+            <button style="background: none; border: none; color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; cursor: pointer; transition: color 0.3s; padding: 0.5rem 1rem;" 
+                    onmouseover="this.style.color='#22d3ee'; document.getElementById('dropdown-menu').style.display='block';" 
+                    onmouseout="this.style.color='#94a3b8';">
+                homelab_ ▼
+            </button>
+            <div id="dropdown-menu" 
+                 style="display: none; position: absolute; top: 100%; left: 0; background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; min-width: 200px; z-index: 1001; margin-top: 0.5rem;"
+                 onmouseenter="this.style.display='block';"
+                 onmouseleave="this.style.display='none';">
+                <a href="dc01.html" style="display: block; padding: 0.75rem 1rem; color: #f8fafc; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: background 0.2s;" 
+                   onmouseover="this.style.background='rgba(34, 211, 238, 0.1)';" 
+                   onmouseout="this.style.background='transparent';">
+                    DC01
+                </a>
+                <a href="app01.html" style="display: block; padding: 0.75rem 1rem; color: #f8fafc; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: background 0.2s; border-top: 1px solid #1e293b;" 
+                   onmouseover="this.style.background='rgba(34, 211, 238, 0.1)';" 
+                   onmouseout="this.style.background='transparent';">
+                    APP01
+                </a>
+                <a href="mgr1.html" style="display: block; padding: 0.75rem 1rem; color: #f8fafc; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: background 0.2s;" 
+                   onmouseover="this.style.background='rgba(34, 211, 238, 0.1)';" 
+                   onmouseout="this.style.background='transparent';">
+                    MGR1
+                </a>
+                <a href="kali.html" style="display: block; padding: 0.75rem 1rem; color: #f8fafc; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: background 0.2s; border-top: 1px solid #1e293b;" 
+                   onmouseover="this.style.background='rgba(34, 211, 238, 0.1)';" 
+                   onmouseout="this.style.background='transparent';">
+                    KALI
+                </a>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-link">← back to home</a>
+    </div>
 </nav>
 
 <header class="hero">
