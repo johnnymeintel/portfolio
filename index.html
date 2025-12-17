@@ -5,139 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Johnny Meintel - Cybersecurity Analyst in Training</title>
     
-    <!-- Google Fonts: JetBrains Mono for terminal/code, Inter for body text -->
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-    /* ====================================================================
-       MAIN STYLESHEET - TABLE OF CONTENTS
-       ====================================================================
-       This stylesheet is organized into logical sections for easy editing.
-       
-       1. CSS Variables & Reset - Global color scheme and spacing
-       2. Background Effects - Animated grid and scroll indicator
-       3. Navigation - Fixed navbar with dropdown menu
-       4. Hero Section - Landing page content and layout
-       5. Buttons - Reusable button styles
-       6. Terminal Component - Animated terminal window
-       7. Lab Overview Cards - VM cards with hover effects
-       8. Timeline - Project phases display
-       9. Skills Section - Two-column skills/certifications layout
-       10. Contact Section - Contact grid with icons
-       11. Mobile Responsive - Media queries for tablet/mobile
-       ==================================================================== */
-
-    /* ====================================================================
-       1. CSS VARIABLES & RESET
-       ==================================================================== */
     :root {
-        /* Background Colors - Dark theme palette */
-        --primary-bg: #0a0e27;      /* Main background */
-        --secondary-bg: #1a1f3a;    /* Cards and sections */
-        --accent-bg: #252b4a;       /* Highlighted elements */
-        
-        /* Theme Colors - Cybersecurity aesthetic */
-        --terminal-green: #00ff87;  /* Success/active states */
-        --cyber-blue: #00d4ff;      /* Primary accent color */
-        --warning-red: #ff4757;     /* Alerts and red team */
-        --warning-orange: #ff6b35;  /* Caution states */
-        --siem-blue: #00aaff;       /* SIEM-specific color */
-        --siem-purple: #8b5cf6;     /* Purple team/SIEM accent */
-        --kali-purple: #8b5cf6;     /* Kali Linux theme */
-        --kali-red: #ff4757;        /* Kali accent color */
-        
-        /* Text Colors - Hierarchy of readability */
-        --text-primary: #e4e7eb;    /* Main readable text */
-        --text-secondary: #a0a6b8;  /* Secondary information */
-        --text-muted: #6c7293;      /* Subtle text/metadata */
-        
-        /* UI Elements */
-        --border-color: #2d3454;    /* Borders and dividers */
-        --glow-blue: rgba(0, 212, 255, 0.3);   /* Hover glow effects */
+        --primary-bg: #0a0e27;
+        --secondary-bg: #1a1f3a;
+        --accent-bg: #252b4a;
+        --terminal-green: #00ff87;
+        --cyber-blue: #00d4ff;
+        --warning-red: #ff4757;
+        --warning-orange: #ff6b35;
+        --siem-blue: #00aaff;
+        --siem-purple: #8b5cf6;
+        --kali-purple: #8b5cf6;
+        --kali-red: #ff4757;
+        --text-primary: #e4e7eb;
+        --text-secondary: #a0a6b8;
+        --text-muted: #6c7293;
+        --border-color: #2d3454;
+        --glow-blue: rgba(0, 212, 255, 0.3);
         --glow-green: rgba(0, 255, 135, 0.2);
-        
-        /* Spacing - Consistent padding/margins */
-        --section-padding: 6rem 2rem;  /* Top/bottom, left/right */
+        --section-padding: 6rem 2rem;
         --card-padding: 1.5rem;
     }
 
-    /* CSS Reset - Remove browser defaults */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
-    /* Body - Global font and background */
     body {
         background: var(--primary-bg);
         color: var(--text-primary);
         font-family: 'Inter', sans-serif;
         line-height: 1.6;
-        overflow-x: hidden;  /* Prevent horizontal scroll */
+        overflow-x: hidden;
     }
 
-    /* ====================================================================
-       2. BACKGROUND EFFECTS
-       ==================================================================== */
-    
-    /* Animated grid background - creates "cyber" aesthetic */
     .bg-grid {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        /* Creates cross-hatch grid pattern */
         background-image: 
             linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
         background-size: 50px 50px;
         animation: gridMove 20s linear infinite;
-        z-index: -1;  /* Keep behind all content */
+        z-index: -1;
     }
 
-    /* Grid animation - slow diagonal movement */
     @keyframes gridMove {
         0% { transform: translate(0, 0); }
         100% { transform: translate(50px, 50px); }
     }
 
-    /* Scroll progress indicator - bar at top of page */
     .scroll-indicator {
         position: fixed;
         top: 0;
         left: 0;
-        width: 0%;  /* JavaScript updates width based on scroll */
+        width: 0%;
         height: 3px;
         background: linear-gradient(90deg, var(--cyber-blue), var(--terminal-green));
         z-index: 9999;
         transition: width 0.1s ease-out;
     }
 
-    /* ====================================================================
-       3. NAVIGATION (Desktop & Mobile)
-       ==================================================================== */
-    
-    /* Fixed navigation bar at top */
     nav {
         position: fixed;
         top: 0;
         width: 100%;
         background: rgba(10, 14, 39, 0.95);
-        backdrop-filter: blur(10px);  /* Blur content behind nav */
+        backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--border-color);
-        z-index: 1000;  /* Stay above other content */
+        z-index: 1000;
         transition: all 0.3s ease;
     }
 
-    /* Enhanced nav shadow when scrolled */
     nav.scrolled {
         background: rgba(10, 14, 39, 0.98);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
-    /* Nav container - centers content with max width */
     .nav-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -147,7 +99,6 @@
         padding: 1rem 2rem;
     }
 
-    /* Logo - terminal-style branding */
     .logo {
         font-family: 'JetBrains Mono', monospace;
         font-weight: 700;
@@ -157,9 +108,8 @@
         z-index: 1001;
     }
 
-    /* Mobile menu toggle - hidden on desktop */
     .mobile-menu-toggle {
-        display: none;  /* Shown via media query */
+        display: none;
         background: none;
         border: none;
         color: var(--cyber-blue);
@@ -170,7 +120,6 @@
         line-height: 1;
     }
 
-    /* Navigation links list */
     .nav-links {
         display: flex;
         list-style: none;
@@ -178,7 +127,6 @@
         transition: all 0.3s ease;
     }
 
-    /* Nav link styling */
     .nav-links a {
         color: var(--text-secondary);
         text-decoration: none;
@@ -190,13 +138,11 @@
         color: var(--cyber-blue);
     }
 
-    /* Dropdown menu container */
     .dropdown {
         position: relative;
         display: inline-block;
     }
 
-    /* Dropdown button */
     .dropbtn {
         color: var(--text-secondary);
         text-decoration: none;
@@ -210,7 +156,6 @@
         color: var(--cyber-blue); 
     }
 
-    /* Dropdown content - hidden by default */
     .dropdown-content {
         display: none;
         position: absolute;
@@ -226,7 +171,6 @@
         backdrop-filter: blur(10px);
     }
 
-    /* Dropdown links */
     .dropdown-content a {
         color: var(--text-secondary);
         padding: 0.9rem 1.2rem;
@@ -239,26 +183,23 @@
     .dropdown-content a:hover {
         background: rgba(0, 212, 255, 0.15);
         color: var(--cyber-blue);
-        padding-left: 1.5rem;  /* Indent on hover */
+        padding-left: 1.5rem;
     }
 
     .dropdown-content a:last-child { 
         border-bottom: none; 
     }
 
-    /* Show dropdown on hover (desktop) */
     .dropdown:hover .dropdown-content {
         display: block;
         animation: fadeIn 0.3s ease-out;
     }
 
-    /* Fade in animation for dropdown */
     @keyframes fadeIn {
         from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
         to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Blinking cursor animation for logo */
     .blink-cursor {
         animation: blink 1s infinite;
         font-family: 'JetBrains Mono', monospace;
@@ -269,11 +210,6 @@
         51%, 100% { opacity: 0; }
     }
 
-    /* ====================================================================
-       4. HERO SECTION
-       ==================================================================== */
-    
-    /* Hero - Full viewport height landing section */
     .hero {
         min-height: 100vh;
         display: flex;
@@ -283,7 +219,6 @@
         padding: 0 2rem;
     }
 
-    /* Hero grid - two-column layout (text + terminal) */
     .hero-content {
         max-width: 1200px;
         display: grid;
@@ -292,22 +227,20 @@
         align-items: center;
     }
 
-    /* Main heading */
     .hero-text h1 {
-        font-size: clamp(2rem, 5vw, 3.5rem);  /* Responsive font size */
+        font-size: clamp(2rem, 5vw, 3.5rem);
         font-weight: 700;
         margin-bottom: 1rem;
     }
 
-    /* Animated gradient text for name - purple team colors */
     .gradient-text {
         background: linear-gradient(
             90deg,
-            var(--cyber-blue) 0%,     /* Blue team */
+            var(--cyber-blue) 0%,
             var(--cyber-blue) 25%,
-            var(--warning-red) 45%,    /* Red team */
+            var(--warning-red) 45%,
             var(--warning-red) 55%,
-            #8b5cf6 75%,               /* Purple team */
+            #8b5cf6 75%,
             #8b5cf6 100%
         );
         background-size: 300% 100%;
@@ -318,7 +251,6 @@
         filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.3));
     }
 
-    /* Gradient animation - cycles through blue/red/purple */
     @keyframes purpleTeamGradient {
         0% {
             background-position: 0% 50%;
@@ -350,7 +282,6 @@
         }
     }
 
-    /* Subtitle text */
     .hero-text .subtitle {
         font-size: clamp(1.1rem, 3vw, 1.5rem);
         color: var(--text-secondary);
@@ -358,14 +289,12 @@
         font-weight: 300;
     }
 
-    /* Body paragraphs */
     .hero-text p {
         font-size: clamp(0.95rem, 2vw, 1.1rem);
         color: var(--text-muted);
         margin-bottom: 2rem;
     }
 
-    /* Highlighted mantra box - stands out */
     .mantra-box {
         background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 135, 0.05));
         padding: 1.5rem;
@@ -380,7 +309,6 @@
         overflow: hidden;
     }
 
-    /* Shimmer effect overlay */
     .mantra-box::before {
         content: '';
         position: absolute;
@@ -398,7 +326,6 @@
         100% { transform: translateX(100%); }
     }
 
-    /* Mantra text styling */
     .mantra-box p {
         font-size: clamp(1rem, 2vw, 1.15rem);
         color: var(--text-primary);
@@ -411,18 +338,12 @@
         z-index: 1;
     }
 
-    /* CTA buttons grid */
     .cta-buttons {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 1rem;
     }
 
-    /* ====================================================================
-       5. BUTTONS
-       ==================================================================== */
-    
-    /* Base button styling */
     .btn {
         padding: 0.875rem 2rem;
         border: none;
@@ -435,11 +356,10 @@
         gap: 0.5rem;
         transition: all 0.3s ease;
         cursor: pointer;
-        min-height: 44px;  /* Touch-friendly size */
+        min-height: 44px;
         text-align: center;
     }
 
-    /* Primary button - solid gradient */
     .btn-primary {
         background: linear-gradient(135deg, var(--cyber-blue), #0097cc);
         color: white;
@@ -450,7 +370,6 @@
         box-shadow: 0 8px 25px var(--glow-blue);
     }
 
-    /* Secondary button - outlined */
     .btn-secondary {
         background: transparent;
         color: var(--text-primary);
@@ -463,11 +382,6 @@
         box-shadow: 0 0 15px var(--glow-green);
     }
 
-    /* ====================================================================
-       6. TERMINAL COMPONENT
-       ==================================================================== */
-    
-    /* Terminal container with slide-in animation */
     .terminal-container {
         animation: slideInRight 0.8s ease-out 0.4s both;
     }
@@ -483,7 +397,6 @@
         }
     }
 
-    /* Terminal window */
     .terminal {
         background: var(--secondary-bg);
         border: 1px solid var(--border-color);
@@ -492,7 +405,6 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
 
-    /* Terminal header - macOS style */
     .terminal-header {
         background: var(--accent-bg);
         padding: 1rem;
@@ -501,7 +413,6 @@
         gap: 0.5rem;
     }
 
-    /* Terminal control buttons */
     .terminal-button {
         width: 12px;
         height: 12px;
@@ -512,7 +423,6 @@
     .btn-minimize { background: var(--warning-orange); }
     .btn-maximize { background: var(--terminal-green); }
 
-    /* Terminal window title */
     .terminal-title {
         margin-left: 1rem;
         font-family: 'JetBrains Mono', monospace;
@@ -520,7 +430,6 @@
         color: var(--text-secondary);
     }
 
-    /* Terminal content area */
     .terminal-content {
         padding: 1.5rem;
         font-family: 'JetBrains Mono', monospace;
@@ -529,14 +438,12 @@
         overflow-x: auto;
     }
 
-    /* Terminal lines - animated on load */
     .terminal-line {
         opacity: 0;
         transition: opacity 0.2s ease-out;
         white-space: nowrap;
     }
     
-    /* Fallback animation - ensures visibility after 5s */
     .terminal-line {
         animation: fadeInFallback 0.5s ease-in 5s forwards;
     }
@@ -545,32 +452,24 @@
         to { opacity: 1; }
     }
 
-    /* Terminal text colors */
     .prompt { color: var(--cyber-blue); }
     .success { color: var(--terminal-green); }
     .warning { color: var(--warning-orange); }
     .error { color: var(--warning-red); }
     .defense { color: var(--cyber-blue); }
 
-    /* Terminal icons - fixed width for alignment */
     .terminal-icon {
         display: inline-block;
         width: 1.2em;
         text-align: center;
     }
 
-    /* ====================================================================
-       7. LAB OVERVIEW CARDS
-       ==================================================================== */
-    
-    /* Lab overview section */
     .lab-overview {
         padding: var(--section-padding);
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    /* Section title styling */
     .section-title {
         font-size: clamp(2rem, 4vw, 2.5rem);
         text-align: center;
@@ -580,7 +479,132 @@
         -webkit-text-fill-color: transparent;
     }
 
-    /* Lab cards grid - responsive columns */
+    /* SLIDESHOW CSS - NEW */
+    .slideshow-container {
+        position: relative;
+        max-width: 800px;
+        margin: 3rem auto;
+        background: var(--secondary-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .slideshow-slide {
+        display: none;
+        width: 100%;
+        animation: slideIn 0.6s ease-in-out;
+    }
+
+    .slideshow-slide.active {
+        display: block;
+    }
+
+    .slideshow-slide img {
+        width: 100%;
+        height: auto;
+        display: block;
+        max-height: 600px;
+        object-fit: contain;
+        background: var(--primary-bg);
+    }
+
+    .slideshow-caption {
+        padding: 1.5rem;
+        background: var(--accent-bg);
+        border-top: 1px solid var(--border-color);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        text-align: center;
+    }
+
+    .slideshow-prev,
+    .slideshow-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 212, 255, 0.2);
+        color: var(--cyber-blue);
+        border: 1px solid var(--cyber-blue);
+        font-size: 1.5rem;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+        backdrop-filter: blur(5px);
+        border-radius: 8px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .slideshow-prev { left: 1rem; }
+    .slideshow-next { right: 1rem; }
+
+    .slideshow-prev:hover,
+    .slideshow-next:hover {
+        background: rgba(0, 212, 255, 0.4);
+        box-shadow: 0 0 20px var(--glow-blue);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .slideshow-indicators {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.5rem;
+        z-index: 10;
+    }
+
+    .slideshow-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .slideshow-indicator.active {
+        background: var(--cyber-blue);
+        box-shadow: 0 0 10px var(--glow-blue);
+        transform: scale(1.2);
+    }
+
+    .slideshow-indicator:hover {
+        background: var(--terminal-green);
+        transform: scale(1.1);
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .slideshow-title {
+        text-align: center;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--cyber-blue), var(--terminal-green));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
     .lab-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
@@ -588,7 +612,6 @@
         margin-bottom: 4rem;
     }
 
-    /* Individual lab card */
     .lab-card {
         background: var(--secondary-bg);
         border: 1px solid var(--border-color);
@@ -605,7 +628,6 @@
         color: inherit;
     }
 
-    /* VM-specific subtle color tints */
     .lab-card.dc01 {
         background: linear-gradient(135deg, var(--secondary-bg) 0%, rgba(59, 130, 246, 0.03) 100%);
         border-left: 3px solid rgba(59, 130, 246, 0.3);
@@ -635,8 +657,6 @@
         background: linear-gradient(135deg, var(--secondary-bg) 0%, rgba(0, 212, 255, 0.03) 100%);
         border-left: 3px solid rgba(0, 212, 255, 0.3);
     }
-
-    /* Top border animation on hover */
     .lab-card::before {
         content: '';
         position: absolute;
@@ -649,56 +669,46 @@
         transition: transform 0.3s ease;
     }
 
-    /* DC01 card colors - Blue */
     .lab-card.dc01::before {
         background: linear-gradient(90deg, #3b82f6, #60a5fa);
     }
 
-    /* APP01 card colors - Green */
     .lab-card.app01::before {
         background: linear-gradient(90deg, #10b981, #34d399);
     }
 
-    /* MGR1 card colors - Red */
     .lab-card.mgr1::before {
         background: linear-gradient(90deg, #ef4444, #f87171);
     }
 
-    /* SIEM card custom colors */
     .lab-card.siem::before {
         background: linear-gradient(90deg, var(--siem-blue), var(--siem-purple));
     }
 
-    /* Kali card custom colors */
     .lab-card.kali::before {
         background: linear-gradient(90deg, var(--kali-purple), var(--kali-red));
     }
 
-    /* Workstations card colors - Cyan */
     .lab-card.workstations::before {
         background: linear-gradient(90deg, var(--cyber-blue), #67e8f9);
     }
 
-    /* Card hover effects - default */
     .lab-card:hover {
         transform: translateY(-5px);
         border-color: var(--cyber-blue);
         box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
     }
 
-    /* DC01 hover - blue glow */
     .lab-card.dc01:hover {
         border-color: #3b82f6;
         box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
     }
 
-    /* APP01 hover - green glow */
     .lab-card.app01:hover {
         border-color: #10b981;
         box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
     }
 
-    /* MGR1 hover - red glow */
     .lab-card.mgr1:hover {
         border-color: #ef4444;
         box-shadow: 0 10px 30px rgba(239, 68, 68, 0.15);
@@ -714,7 +724,6 @@
         box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
     }
 
-    /* Workstations hover - cyan glow */
     .lab-card.workstations:hover {
         border-color: var(--cyber-blue);
         box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
@@ -724,7 +733,6 @@
         transform: scaleX(1);
     }
 
-    /* Tooltip on hover */
     .lab-card.clickable::after {
         content: "🖥️ Click to view VM details";
         position: absolute;
@@ -774,7 +782,6 @@
         opacity: 1;
     }
 
-    /* Link icon in top-right */
     .vm-link-icon {
         position: absolute;
         top: 1rem;
@@ -814,7 +821,6 @@
         color: var(--cyber-blue);
     }
 
-    /* Card header with icon */
     .lab-header {
         display: flex;
         align-items: center;
@@ -822,7 +828,6 @@
         margin-bottom: 1rem;
     }
 
-    /* Icon container */
     .lab-icon {
         width: 48px;
         height: 48px;
@@ -835,27 +840,23 @@
         flex-shrink: 0;
     }
 
-    /* VM name */
     .lab-name {
         font-size: 1.25rem;
         font-weight: 600;
         color: var(--text-primary);
     }
 
-    /* VM role subtitle */
     .lab-role {
         font-size: 0.875rem;
         color: var(--text-muted);
     }
 
-    /* Card description */
     .lab-card p {
         flex-grow: 1;
         margin-bottom: 1rem;
         font-size: clamp(0.9rem, 1.5vw, 1rem);
     }
 
-    /* Stats grid at bottom of card */
     .lab-stats {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -866,7 +867,6 @@
         min-height: 3rem;
     }
 
-    /* Individual stat badge */
     .stat {
         background: var(--accent-bg);
         padding: 0.4rem 0.8rem;
@@ -879,7 +879,6 @@
         min-width: fit-content;
     }
 
-    /* Stat value highlighting */
     .stat-value {
         color: var(--cyber-blue);
         font-weight: 600;
@@ -909,11 +908,6 @@
         color: var(--cyber-blue);
     }
 
-    /* ====================================================================
-       8. TIMELINE (Desktop & Mobile)
-       ==================================================================== */
-    
-    /* Timeline container */
     .lab-timeline {
         background: var(--secondary-bg);
         border-radius: 16px;
@@ -921,21 +915,18 @@
         margin-top: 3rem;
     }
 
-    /* Timeline section title */
     .timeline-title {
         font-size: clamp(1.3rem, 3vw, 1.5rem);
         margin-bottom: 2rem;
         text-align: center;
     }
 
-    /* Timeline layout container */
     .timeline-container {
         position: relative;
         max-width: 1000px;
         margin: 0 auto;
     }
 
-    /* DESKTOP: Vertical connecting line between phases */
     .timeline-line {
         position: absolute;
         left: 50%;
@@ -943,7 +934,6 @@
         width: 1px;
         top: 30px;
         bottom: 30px;
-        /* Gradient changes color through phases */
         background: linear-gradient(180deg, 
             rgba(0, 212, 255, 0.2) 0%,
             rgba(0, 212, 255, 0.2) 40%,
@@ -955,7 +945,6 @@
         opacity: 0.5;
     }
 
-    /* Timeline item - alternates left/right */
     .timeline-item {
         display: flex;
         margin-bottom: 2rem;
@@ -964,17 +953,15 @@
         z-index: 1;
     }
 
-    /* Even items flip to right */
     .timeline-item:nth-child(even) {
         flex-direction: row-reverse;
     }
 
-    /* Timeline content card */
     .timeline-content {
         background: var(--accent-bg);
         padding: 1.5rem;
         border-radius: 12px;
-        width: 45%;  /* Takes up less than half to allow center space */
+        width: 45%;
         position: relative;
         border: 1px solid var(--border-color);
         transition: all 0.3s ease;
@@ -984,7 +971,6 @@
         display: block;
     }
 
-    /* Timeline card hover effects */
     .timeline-content:hover {
         transform: scale(1.02);
         border-color: var(--cyber-blue);
@@ -992,19 +978,16 @@
         background: var(--secondary-bg);
     }
 
-    /* Red team phase (Phase 3) hover */
     .red-team-phase .timeline-content:hover {
         border-color: var(--warning-red);
         box-shadow: 0 8px 25px rgba(255, 71, 87, 0.2);
     }
 
-    /* Expansion phases (4 & 5) hover */
     .expansion-phase .timeline-content:hover {
         border-color: #8b5cf6;
         box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
     }
 
-    /* Tooltip on timeline item hover */
     .timeline-item.clickable .timeline-content::after {
         content: "🔗 Click to view documentation";
         position: absolute;
@@ -1028,7 +1011,6 @@
         transform: translateY(0);
     }
 
-    /* External link icon */
     .external-link-icon {
         position: absolute;
         top: 1rem;
@@ -1043,7 +1025,6 @@
         color: var(--cyber-blue);
     }
 
-    /* DESKTOP: Phase badge in center of timeline */
     .timeline-date {
         position: absolute;
         left: 50%;
@@ -1059,19 +1040,16 @@
         white-space: nowrap;
     }
 
-    /* Red team phase badge */
     .timeline-date.red-team {
         background: var(--warning-red);
         color: white;
     }
 
-    /* Expansion phase badge */
     .timeline-date.expansion {
         background: #8b5cf6;
         color: white;
     }
 
-    /* Phase title */
     .phase-title {
         font-size: clamp(1rem, 2vw, 1.1rem);
         font-weight: 600;
@@ -1087,14 +1065,12 @@
         color: #8b5cf6;
     }
 
-    /* Phase description text */
     .phase-desc {
         font-size: clamp(0.85rem, 1.5vw, 0.9rem);
         color: var(--text-muted);
         line-height: 1.5;
     }
 
-    /* Status badges (Complete, In Progress, etc.) */
     .phase-status {
         display: inline-block;
         font-family: 'JetBrains Mono', monospace;
@@ -1109,7 +1085,6 @@
         vertical-align: middle;
     }
 
-    /* Complete status */
     .status-complete {
         background: rgba(0, 255, 135, 0.15);
         color: var(--terminal-green);
@@ -1117,7 +1092,6 @@
         box-shadow: 0 0 8px rgba(0, 255, 135, 0.2);
     }
 
-    /* In Progress status - animated pulse */
     .status-in-progress {
         background: rgba(0, 212, 255, 0.15);
         color: var(--cyber-blue);
@@ -1126,14 +1100,12 @@
         animation: pulse 2s ease-in-out infinite;
     }
 
-    /* In Development status */
     .status-in-development {
         background: rgba(160, 166, 184, 0.15);
         color: var(--text-muted);
         border-color: var(--text-muted);
     }
 
-    /* Pulse animation for In Progress badge */
     @keyframes pulse {
         0%, 100% {
             box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
@@ -1143,7 +1115,6 @@
         }
     }
 
-    /* Technology tags */
     .timeline-tech {
         display: flex;
         gap: 0.5rem;
@@ -1151,7 +1122,6 @@
         flex-wrap: wrap;
     }
 
-    /* Individual tech tag */
     .tech-tag {
         background: var(--primary-bg);
         padding: 0.2rem 0.6rem;
@@ -1162,23 +1132,16 @@
         border: 1px solid var(--border-color);
     }
 
-    /* ====================================================================
-       9. SKILLS SECTION
-       ==================================================================== */
-    
-    /* Skills section background */
     .skills {
         padding: var(--section-padding);
         background: var(--secondary-bg);
     }
 
-    /* Skills container */
     .skills-container {
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    /* Two-column grid for skills */
     .skills-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
@@ -1186,19 +1149,16 @@
         margin-top: 3rem;
     }
 
-    /* Category heading */
     .skill-category h3 {
         color: var(--cyber-blue);
         margin-bottom: 1.5rem;
         font-size: clamp(1.1rem, 2.5vw, 1.25rem);
     }
 
-    /* Skills list */
     .skill-list {
         list-style: none;
     }
 
-    /* Individual skill item */
     .skill-list li {
         padding: 0.5rem 0;
         border-bottom: 1px solid var(--border-color);
@@ -1209,13 +1169,11 @@
         flex-wrap: wrap;
     }
 
-    /* Skill name */
     .skill-name {
         font-weight: 500;
         font-size: clamp(0.9rem, 1.5vw, 1rem);
     }
 
-    /* Skill level badge */
     .skill-level {
         font-family: 'JetBrains Mono', monospace;
         font-weight: 700;
@@ -1228,7 +1186,6 @@
         flex-shrink: 0;
     }
 
-    /* Skill level colors */
     .level-beginner    { background:#2d4a5c; color:#88c0ff; }
     .level-intermediate{ background:#3d4a2d; color:#b8e066; }
     .level-advanced    { background:#5c3d2d; color:#ffb366; }
@@ -1236,23 +1193,16 @@
     .level-completed   { background:#2d4a5c; color:#00ffea; }
     .level-certified   { background:#4a2d5c; color:#ff6bc0; }
 
-    /* ====================================================================
-       10. CONTACT SECTION
-       ==================================================================== */
-    
-    /* Contact section */
     .contact {
         padding: var(--section-padding);
         text-align: center;
     }
 
-    /* Contact container */
     .contact-container {
         max-width: 800px;
         margin: 0 auto;
     }
 
-    /* Contact grid - 4 columns */
     .contact-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
@@ -1260,7 +1210,6 @@
         margin-top: 3rem;
     }
 
-    /* Contact card */
     .contact-item {
         background: var(--secondary-bg);
         padding: 2rem;
@@ -1279,22 +1228,15 @@
         background: var(--accent-bg);
     }
 
-    /* Contact icon */
     .contact-icon {
         font-size: 2rem;
         margin-bottom: 1rem;
         color: var(--cyber-blue);
     }
 
-    /* ====================================================================
-       11. MOBILE RESPONSIVE
-       ==================================================================== */
-    
-    /* Tablet and mobile breakpoint */
     @media (max-width: 768px) {
-        /* === NAVIGATION === */
         .mobile-menu-toggle {
-            display: block;  /* Show hamburger menu */
+            display: block;
         }
 
         .nav-container {
@@ -1305,11 +1247,10 @@
             font-size: 0.9rem;
         }
 
-        /* Mobile nav - slide in from right */
         .nav-links {
             position: fixed;
             top: 0;
-            right: -100%;  /* Hidden off-screen */
+            right: -100%;
             width: 70%;
             max-width: 300px;
             height: 100vh;
@@ -1322,12 +1263,10 @@
             z-index: 999;
         }
 
-        /* Show mobile nav when active */
         .nav-links.mobile-active {
             right: 0;
         }
 
-        /* Mobile dropdown - static instead of hover */
         .dropdown-content {
             position: static;
             transform: none;
@@ -1344,22 +1283,21 @@
         }
 
         .dropdown:hover .dropdown-content {
-            display: none;  /* Disable hover on mobile */
+            display: none;
         }
 
-        /* === HERO SECTION === */
         .hero {
             padding: 5.25rem 1rem 2rem;
             min-height: auto;
         }
 
         .hero-content {
-            grid-template-columns: 1fr;  /* Single column */
+            grid-template-columns: 1fr;
             gap: 2rem;
         }
 
         .terminal-container {
-            order: -1;  /* Show terminal first on mobile */
+            order: -1;
         }
 
         .terminal-content {
@@ -1370,12 +1308,10 @@
             font-size: 0.75rem;
         }
 
-        /* === BUTTONS === */
         .cta-buttons {
             grid-template-columns: 1fr;
         }
 
-        /* === LAB CARDS === */
         .lab-overview {
             padding: 3rem 1rem;
         }
@@ -1385,15 +1321,32 @@
         }
 
         .lab-card.clickable::after {
-            display: none;  /* No tooltips on mobile */
+            display: none;
         }
 
-        /* === TIMELINE MOBILE === */
+        .slideshow-container {
+            margin: 2rem 1rem;
+        }
+
+        .slideshow-prev, .slideshow-next {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+        }
+
+        .slideshow-prev { left: 0.5rem; }
+        .slideshow-next { right: 0.5rem; }
+
+        .slideshow-caption {
+            padding: 1rem;
+            font-size: 0.8rem;
+        }
+
         .lab-timeline {
             padding: 1.5rem;
         }
 
-        /* Hide vertical line on mobile */
         .timeline-line {
             display: none;
         }
@@ -1402,7 +1355,6 @@
             padding: 0;
         }
 
-        /* Stack timeline items vertically */
         .timeline-item {
             flex-direction: column !important;
             margin: 0 0 1.5rem 0;
@@ -1411,11 +1363,10 @@
 
         .timeline-content {
             width: 100%;
-            padding-top: 3.5rem;  /* Space for badge */
+            padding-top: 3.5rem;
             position: relative;
         }
 
-        /* MOBILE: Move phase badge inside card at top */
         .timeline-date {
             position: absolute;
             top: 1rem;
@@ -1435,7 +1386,6 @@
             margin-top: 0.5rem;
         }
 
-        /* === SKILLS === */
         .skills {
             padding: 3rem 1rem;
         }
@@ -1444,18 +1394,16 @@
             gap: 2rem;
         }
 
-        /* === CONTACT === */
         .contact {
             padding: 3rem 1rem;
         }
 
         .contact-grid {
-            grid-template-columns: repeat(2, 1fr);  /* 2 columns on mobile */
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
         }
     }
 
-    /* Small mobile devices */
     @media (max-width: 480px) {
         .hero-text h1 {
             font-size: 1.8rem;
@@ -1480,28 +1428,31 @@
         }
 
         .contact-grid {
-            grid-template-columns: 1fr;  /* Single column on small mobile */
+            grid-template-columns: 1fr;
         }
 
         .terminal-title {
             font-size: 0.7rem;
         }
+
+        .slideshow-prev, .slideshow-next {
+            width: 35px;
+            height: 35px;
+            font-size: 1rem;
+        }
     }
 
-    /* Touch device optimizations */
     @media (hover: none) and (pointer: coarse) {
         .lab-card.clickable::after,
         .timeline-item.clickable .timeline-content::after {
-            display: none;  /* No tooltips on touch devices */
+            display: none;
         }
 
-        /* Ensure touch targets are large enough */
         .btn, .lab-card, .contact-item, .nav-links a {
             min-height: 44px;
         }
     }
 
-    /* Landscape mobile */
     @media (max-width: 768px) and (orientation: landscape) {
         .hero {
             min-height: auto;
@@ -1515,30 +1466,15 @@
 </style>
 </head>
 <body>
-    <!-- Background grid animation -->
     <div class="bg-grid"></div>
-    
-    <!-- Scroll progress indicator -->
     <div class="scroll-indicator" id="scrollIndicator"></div>
     
-    <!-- ====================================================================
-         NAVIGATION
-         ==================================================================== -->
     <nav id="navbar">
         <div class="nav-container">
-            <!-- Logo/branding -->
             <a href="index.html" class="logo">johnny@cybersec:~$ cd index.html</a>
-            
-            <!-- Mobile menu toggle button -->
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                ☰
-            </button>
-            
-            <!-- Navigation links -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">☰</button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="nav-link">Home</a></li>
-                
-                <!-- Homelab dropdown menu -->
                 <li class="dropdown" id="homelabDropdown">
                     <a href="#lab" class="dropbtn">Homelab<span class="blink-cursor">_</span></a>
                     <div class="dropdown-content">
@@ -1549,44 +1485,30 @@
                         <a href="kali.html">KALI – Attack Platform</a>
                     </div>
                 </li>
-
                 <li><a href="#skills" class="nav-link">Skills</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- ====================================================================
-         HERO SECTION
-         ==================================================================== -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <!-- Text content (left column on desktop) -->
             <div class="hero-text">
                 <h1><span class="gradient-text">Johnny Meintel</span></h1>
-                
-                <div class="subtitle">Cybersecurity Analyst in Training</div>
-                
-                <!-- Highlighted mantra box -->
                 <div class="mantra-box">
-                    <p>2 college degrees and a dozen certifications taught me how things can work.
-                        A year in tech support has taught me how things can break.
-                        To be a cybersecurity analyst, I'm building a homelab that teaches me both.</p>
+                    <p>Actively seeking entry-level cybersecurity opportunities.</p>
                 </div>
-
                 <p style="margin-top: 1.5rem; color: var(--text-primary); line-height: 1.8; font-size: clamp(0.95rem, 1.8vw, 1.05rem);">
-                    Actively seeking entry-level cybersecurity opportunities.
+                    Welcome to my homelab portfolio. In order to gain real-world cybersecurity experience, I built a simulated enterprise network to practice
+                    attack/defense scenarios. Below you will find details of each lab component and development phase. My GitHub contains all the scripts and code used,
+                    and my Medium profile has technical writeups and walkthroughs for the lab environment. 
                 </p>
-                
-                <!-- CTA buttons -->
                 <div class="cta-buttons">
                     <a href="#lab" class="btn btn-primary">View Homelab</a>
                     <a href="https://github.com/johnnymeintel/johnnycybersec" class="btn btn-secondary" target="_blank">View GitHub</a>
                     <a href="https://medium.com/@johnnymeintel" class="btn btn-secondary" target="_blank">View Medium</a>
                 </div>
             </div>
-            
-            <!-- Terminal component (right column on desktop) -->
             <div class="terminal-container">
                 <div class="terminal">
                     <div class="terminal-header">
@@ -1608,15 +1530,38 @@
         </div>
     </section>
 
-    <!-- ====================================================================
-         LAB OVERVIEW SECTION
-         ==================================================================== -->
     <section class="lab-overview" id="lab">
-        <h2 class="section-title">Cybersecurity Analyst Homelab</h2>
+        <h2 class="slideshow-title">Homelab Environment</h2>
         
-        <!-- VM cards grid -->
+        <!-- SLIDESHOW - REPLACES STATIC TITLE -->
+        <div class="slideshow-container" id="homelabSlideshow">
+            <div class="slideshow-slide active">
+                <img src="assets/slideshow1.png" alt="Splunk Dashboard Overview">
+                <div class="slideshow-caption">Splunk SIEM Monitoring</div>
+            </div>
+            <div class="slideshow-slide">
+                <img src="assets/slideshow2.png" alt="Attack Surface Analysis">
+                <div class="slideshow-caption">KALI Linux Attack Platform</div>
+            </div>
+            <div class="slideshow-slide">
+                <img src="assets/slideshow3.png" alt="PowerShell Experience">
+                <div class="slideshow-caption">PowerShell Command Line Experience</div>
+            </div>
+            <div class="slideshow-slide">
+                <img src="assets/slideshow4.png" alt="Detection Rules">
+                <div class="slideshow-caption">Professional Documentation</div>
+            </div>
+            <a class="slideshow-prev" onclick="changeSlide(-1)">❮</a>
+            <a class="slideshow-next" onclick="changeSlide(1)">❯</a>
+            <div class="slideshow-indicators">
+                <span class="slideshow-indicator active" onclick="currentSlide(0)"></span>
+                <span class="slideshow-indicator" onclick="currentSlide(1)"></span>
+                <span class="slideshow-indicator" onclick="currentSlide(2)"></span>
+                <span class="slideshow-indicator" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+
         <div class="lab-grid">
-            <!-- DC01 Card -->
             <a href="dc01.html" class="lab-card clickable dc01">
                 <span class="vm-link-icon">🔗</span>
                 <div class="lab-header">
@@ -1633,7 +1578,6 @@
                 </div>
             </a>
 
-            <!-- APP01 Card -->
             <a href="app01.html" class="lab-card clickable app01">
                 <span class="vm-link-icon">🌐</span>
                 <div class="lab-header">
@@ -1650,7 +1594,6 @@
                 </div>
             </a>
 
-            <!-- MGR1 Card -->
             <a href="mgr1.html" class="lab-card clickable mgr1">
                 <span class="vm-link-icon">💼</span>
                 <div class="lab-header">
@@ -1667,7 +1610,6 @@
                 </div>
             </a>
 
-            <!-- SIEM01 Card -->
             <a href="siem01.html" class="lab-card clickable siem">
                 <span class="vm-link-icon">📊</span>
                 <div class="lab-header">
@@ -1684,7 +1626,6 @@
                 </div>
             </a>
 
-            <!-- KALI Card -->
             <a href="kali.html" class="lab-card clickable kali">
                 <span class="vm-link-icon">🐉</span>
                 <div class="lab-header">
@@ -1701,7 +1642,6 @@
                 </div>
             </a>
 
-            <!-- Workstations Card (DEV1 + USER1) -->
             <a href="" class="lab-card clickable workstations">
                 <span class="vm-link-icon">💻</span>
                 <div class="lab-header">
@@ -1719,24 +1659,18 @@
             </a>
         </div>
 
-        <!-- ====================================================================
-             TIMELINE SECTION
-             ==================================================================== -->
         <div class="lab-timeline">
             <h3 class="timeline-title">Lab Development Timeline</h3>
             <div class="timeline-container">
-                <!-- Vertical connecting line (desktop only) -->
                 <div class="timeline-line"></div>
                 
-                <!-- Phase 1 -->
                 <div class="timeline-item clickable">
                     <div class="timeline-date">Phase 1</div>
                     <a href="phaseone.html" class="timeline-content">
                         <span class="external-link-icon">🔗</span>
                         <div class="phase-title">Vulnerable Foundation<span class="phase-status status-complete">Complete</span></div>
-                        <div class="phase-desc">Established deliberately vulnerable core infrastructure with Windows Server 2022 domain controller and basic 
-                            Active Directory forest. Misconfigured executive workstation with Domain Admin auto-logon and web server with cleartext credentials for 
-                            realistic attack scenarios.</div>
+                        <div class="phase-desc">Installed all lab components, created the Active Directory domain, and manually introduced security vulnerabilities
+                            to plan for the Phase 3 attack.</div>
                         <div class="timeline-tech">
                             <span class="tech-tag">Windows Server 2022</span>
                             <span class="tech-tag">Windows 11</span>
@@ -1746,7 +1680,6 @@
                     </a>
                 </div>
 
-                <!-- Phase 2 -->
                 <div class="timeline-item clickable">
                     <div class="timeline-date">Phase 2</div>
                     <a href="phasetwo.html" class="timeline-content">
@@ -1761,13 +1694,13 @@
                     </a>
                 </div>
 
-                <!-- Phase 3 - Red Team -->
                 <div class="timeline-item clickable red-team-phase">
                     <div class="timeline-date red-team">Phase 3</div>
                     <a href="" class="timeline-content">
                         <span class="external-link-icon">🔄</span>
-                        <div class="phase-title red-team">Red Team Attack Ops<span class="phase-status status-in-development">In Development</span></div>
-                        <div class="phase-desc">Practice exploitation scenarios on the vulnerable infrastructure, simulating MITRE ATT&CK paths. Don't just think like an attacker, act like one.</div>
+                        <div class="phase-title red-team">Penetration Testing<span class="phase-status status-in-development">In Development</span></div>
+                        <div class="phase-desc">Practice exploitation scenarios on the vulnerable infrastructure by emulating an advanced adversary simulating MITRE ATT&CK paths. 
+                            Don't just think like an attacker, act like one.</div>
                         <div class="timeline-tech">
                             <span class="tech-tag">Windows 11</span>
                             <span class="tech-tag">Kali Linux</span>
@@ -1777,13 +1710,13 @@
                     </a>
                 </div>
 
-                <!-- Phase 4 - Remediation -->
                 <div class="timeline-item clickable expansion-phase">
                     <div class="timeline-date expansion">Phase 4</div>
                     <a href="" class="timeline-content">
                         <span class="external-link-icon">⚔️</span>
-                        <div class="phase-title expansion">Remediation & Detection<span class="phase-status status-in-development">In Development</span></div>
-                        <div class="phase-desc">Engineer detection and remediation techniques for the compromised environment. Configure scripts for automated vulnerability assessment.</div>
+                        <div class="phase-title expansion">Incident Response<span class="phase-status status-in-development">In Development</span></div>
+                        <div class="phase-desc">Document the Phase 3 attack as an Incident Response report. Remediate the introduced vulnerabilities, and 
+                            build detection rules to prevent future occurrences.</div>
                         <div class="timeline-tech">
                             <span class="tech-tag">Vulnerabilities Patched</span>
                             <span class="tech-tag">Advanced Monitoring</span>
@@ -1793,13 +1726,14 @@
                     </a>
                 </div>
 
-                <!-- Phase 5 - Expansion -->
                 <div class="timeline-item clickable expansion-phase">
                     <div class="timeline-date expansion">Phase 5</div>
                     <a href="" class="timeline-content">
                         <span class="external-link-icon">🎯</span>
-                        <div class="phase-title expansion">Environment Expansion<span class="phase-status status-in-development">In Development</span></div>
-                        <div class="phase-desc">Adding developer and standard user workstations for complex lateral movement scenarios. Implementing advanced logging and threat hunting capabilities.</div>
+                        <div class="phase-title expansion">Purple Team<span class="phase-status status-in-development">In Development</span></div>
+                        <div class="phase-desc">Adding developer and standard user workstations for more complex lateral movement scenarios.
+                            Developing attack strategies against the now-secured environment and building advanced detection rules in response.
+                        </div>
                         <div class="timeline-tech">
                             <span class="tech-tag">Additional Workstations</span>
                             <span class="tech-tag">Advanced Logging</span>
@@ -1811,14 +1745,10 @@
         </div>
     </section>
 
-    <!-- ====================================================================
-         SKILLS SECTION
-         ==================================================================== -->
     <section class="skills" id="skills">
         <div class="skills-container">
             <h2 class="section-title">Technical Expertise</h2>
             <div class="skills-grid">
-                <!-- Technical Skills Column -->
                 <div class="skill-category">
                     <h3>Technical Skills</h3>
                     <ul class="skill-list">
@@ -1853,7 +1783,6 @@
                     </ul>
                 </div>
                 
-                <!-- Certifications Column -->
                 <div class="skill-category">
                     <h3>Certifications & Learning</h3>
                     <ul class="skill-list">
@@ -1893,101 +1822,110 @@
         </div>
     </section>
 
-    <!-- ====================================================================
-         CONTACT SECTION
-         ==================================================================== -->
     <section class="contact" id="contact">
         <div class="contact-container">
             <h2 class="section-title">Let's Connect</h2>
             <p>Currently pursuing a SOC Analyst or Junior Cybersecurity Analyst role</p>
             
             <div class="contact-grid">
-                <!-- Email - JavaScript handles mailto to prevent scraping -->
                 <a id="emailBtn" href="#" class="contact-item">
                     <div class="contact-icon">📧</div>
                     <h3>Email</h3>
                 </a>
-                
-                <!-- LinkedIn -->
                 <a href="https://www.linkedin.com/in/johnny-meintel-3a9280269/" class="contact-item" target="_blank" rel="noopener noreferrer">
                     <div class="contact-icon">💼</div>
                     <h3>LinkedIn</h3>
                 </a>
-                
-                <!-- GitHub -->
                 <a href="https://github.com/johnnymeintel/johnnycybersec" class="contact-item" target="_blank" rel="noopener noreferrer">
                     <div class="contact-icon">💻</div>
                     <h3>GitHub</h3>
                 </a>
-
-                <!-- Medium -->
                 <a href="https://medium.com/@johnnymeintel" class="contact-item" target="_blank" rel="noopener noreferrer">
                     <div class="contact-icon">📝</div>
                     <h3>Medium</h3>
                 </a>
             </div>
         </div>
-        
-        <!-- Easter egg hint -->
         <div style="text-align:center; margin-top:3rem; opacity:0.3; font-family:'JetBrains Mono',monospace; font-size:0.7rem;">
             <p>⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️ // classic cheat codes still work...</p>
         </div>
     </section>
 
-<!-- ====================================================================
-     JAVASCRIPT
-     ==================================================================== -->
 <script>
-    // ====================================================================
-    // SECURE EMAIL OBFUSCATION
-    // ====================================================================
-    // Prevents email harvesting by spam bots while maintaining functionality
-    // Email is constructed client-side using JavaScript
+    let currentSlideIndex = 0;
+    let slideshowInterval;
     
+    function initSlideshow() {
+        showSlide(currentSlideIndex);
+        slideshowInterval = setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    }
+    
+    function showSlide(index) {
+        const slides = document.querySelectorAll('.slideshow-slide');
+        const indicators = document.querySelectorAll('.slideshow-indicator');
+        
+        if (index >= slides.length) {
+            currentSlideIndex = 0;
+        } else if (index < 0) {
+            currentSlideIndex = slides.length - 1;
+        } else {
+            currentSlideIndex = index;
+        }
+        
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        slides[currentSlideIndex].classList.add('active');
+        indicators[currentSlideIndex].classList.add('active');
+    }
+    
+    function changeSlide(direction) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = setInterval(() => changeSlide(1), 5000);
+        showSlide(currentSlideIndex + direction);
+    }
+    
+    function currentSlide(index) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = setInterval(() => changeSlide(1), 5000);
+        showSlide(index);
+    }
+    
+    const slideshowContainer = document.getElementById('homelabSlideshow');
+    if (slideshowContainer) {
+        slideshowContainer.addEventListener('mouseenter', () => clearInterval(slideshowInterval));
+        slideshowContainer.addEventListener('mouseleave', () => {
+            slideshowInterval = setInterval(() => changeSlide(1), 5000);
+        });
+    }
+
     (function() {
         'use strict';
-        
-        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             const emailButton = document.getElementById('emailBtn');
-            
             if (emailButton) {
-                // Email components - obfuscated to prevent scraping
                 const username = 'johnny';
                 const domain = 'johnnymeintel.com';
-                
-                // Construct mailto link on click
                 emailButton.addEventListener('click', function(event) {
                     event.preventDefault();
-                    // Only construct email address when user clicks
                     window.location.href = 'mailto:' + username + '@' + domain;
                 });
-                
-                // Optional: Add visual feedback on hover
-                emailButton.addEventListener('mouseenter', function() {
-                    emailButton.style.cursor = 'pointer';
-                });
             }
+            initSlideshow();
         });
     })();
 
-    // ====================================================================
-    // MOBILE NAVIGATION
-    // ====================================================================
-    // Handles mobile menu toggle and dropdown functionality
-    
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const navLinks = document.getElementById('navLinks');
     const homelabDropdown = document.getElementById('homelabDropdown');
 
-    // Toggle mobile menu open/close
     mobileMenuToggle.addEventListener('click', function() {
         navLinks.classList.toggle('mobile-active');
-        // Change icon between hamburger and X
         mobileMenuToggle.textContent = navLinks.classList.contains('mobile-active') ? '✕' : '☰';
     });
 
-    // Close mobile menu when clicking nav links
     document.querySelectorAll('.nav-link').forEach(function(link) {
         link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
@@ -1997,7 +1935,6 @@
         });
     });
 
-    // Mobile dropdown toggle (click instead of hover)
     if (window.innerWidth <= 768) {
         homelabDropdown.addEventListener('click', function(e) {
             if (e.target.classList.contains('dropbtn')) {
@@ -2007,57 +1944,33 @@
         });
     }
 
-    // ====================================================================
-    // SMOOTH SCROLLING
-    // ====================================================================
-    // Smooth scroll to anchor links
-    
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
 
-    // ====================================================================
-    // NAVBAR SCROLL EFFECTS
-    // ====================================================================
-    // Add shadow to navbar on scroll and update progress indicator
-    
     window.addEventListener('scroll', function() {
         const navbar = document.getElementById('navbar');
         const scrollIndicator = document.getElementById('scrollIndicator');
         
-        // Add shadow when scrolled past 50px
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
 
-        // Update scroll progress bar
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
         scrollIndicator.style.width = scrolled + "%";
     });
 
-    // ====================================================================
-    // INTERSECTION OBSERVER - FADE IN ANIMATIONS
-    // ====================================================================
-    // Animate elements when they enter viewport
-    
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
             if (entry.isIntersecting) {
@@ -2067,7 +1980,6 @@
         });
     }, observerOptions);
 
-    // Observe all lab cards for fade-in effect
     document.querySelectorAll('.lab-card').forEach(function(card) {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
@@ -2075,33 +1987,18 @@
         observer.observe(card);
     });
 
-    // ====================================================================
-    // TERMINAL ANIMATION
-    // ====================================================================
-    // Sequentially reveal terminal lines with typing effect
-    
     const terminalLines = document.querySelectorAll('.terminal-line');
-    
     terminalLines.forEach(function(line, index) {
-        setTimeout(function() {
-            line.style.opacity = '1';
-        }, 900 + index * 650);  // Stagger each line by 650ms
+        setTimeout(function() { line.style.opacity = '1'; }, 900 + index * 650);
     });
 
-    // Add blinking cursor after last line
     const lastLine = terminalLines[terminalLines.length - 1];
     if (lastLine) {
         setTimeout(function() {
-            lastLine.insertAdjacentHTML('beforeend', 
-                '<span style="animation: blink 1s infinite;">_</span>');
+            lastLine.insertAdjacentHTML('beforeend', '<span style="animation: blink 1s infinite;">_</span>');
         }, 900 + terminalLines.length * 650 + 300);
     }
 
-    // ====================================================================
-    // LAB CARD HOVER EFFECTS
-    // ====================================================================
-    // Enhanced hover animations for lab cards
-    
     document.querySelectorAll('.lab-card').forEach(function(card) {
         card.addEventListener('mouseenter', function() {
             card.style.transform = 'translateY(-5px) scale(1.02)';
@@ -2111,245 +2008,6 @@
         });
     });
 
-    // ====================================================================
-    // KONAMI CODE EASTER EGG
-    // ====================================================================
-    // Activate hidden terminal mode with Konami code
-    // ⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA
-    
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 
-                        'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 
-                        'b', 'a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', function(e) {
-        // Check if key matches next in sequence
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-            // Code complete - activate easter egg
-            if (konamiIndex === konamiCode.length) {
-                activateTerminalMode();
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;  // Reset on wrong key
-        }
-    });
-
-    // ====================================================================
-    // TERMINAL MODE (Easter Egg)
-    // ====================================================================
-    // Full-page terminal interface with Matrix rain background
-    
-    function activateTerminalMode() {
-        const originalPage = document.body.innerHTML;
-        const birthday = new Date('1990-09-24');
-        const now = new Date();
-        const uptimeDays = Math.floor((now - birthday) / (1000 * 60 * 60 * 24));
-        const uptimeHours = Math.floor(Math.random() * 24);
-        const uptimeMinutes = Math.floor(Math.random() * 60);
-        const browserName = getBrowserName();
-        const osName = getOSName();
-        const screenRes = screen.width + 'x' + screen.height;
-        
-        // Replace entire page with terminal interface
-        document.body.innerHTML = `
-            <div id="matrix-container" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:-1;overflow:hidden;">
-                <canvas id="matrix-canvas" width="${window.innerWidth}" height="${window.innerHeight}"></canvas>
-            </div>
-            <div style="background:rgba(0,0,0,0.85);color:#00ff00;font-family:'JetBrains Mono',monospace;height:100vh;margin:0;padding:2rem;overflow:auto;position:relative;z-index:1;">
-                <div style="position:absolute;top:1rem;right:1rem;opacity:0.5;font-size:0.8rem;">Press ESC to return</div>
-                <pre style="font-size:clamp(0.6rem, 2vw, 1rem);line-height:1.4;overflow-x:auto;">
-     ████  ███████ ██   ██ ███   ██ ███   ██ ██    ██
-       ██  ██   ██ ██   ██ ████  ██ ████  ██  ██  ██ 
-       ██  ██   ██ ███████ ██ ██ ██ ██ ██ ██   ████  
-    ██ ██  ██   ██ ██   ██ ██  ████ ██  ████    ██   
-    █████  ███████ ██   ██ ██   ███ ██   ███    ██   
-                                                       
-    ██   ██ ███████ ██ ███   ██ ████████ ███████ ██     
-    ███ ███ ██      ██ ████  ██    ██     ██      ██     
-    ██ █ ██ █████   ██ ██ ██ ██    ██     █████   ██     
-    ██   ██ ██      ██ ██  ████    ██     ██      ██     
-    ██   ██ ███████ ██ ██   ███    ██     ███████ ███████
-
-    ┌─────────────────────────────────────────┐
-    │ CYBERSECURITY LAB - ADMIN TERMINAL v2.1 │
-    └─────────────────────────────────────────┘
-
-    johnny@siem01:~$ whoami
-    johnny_meintel = cybersecurity_analyst_in_training
-
-    johnny@siem01:~$ uptime
-    ${String(uptimeHours).padStart(2, '0')}:${String(uptimeMinutes).padStart(2, '0')}:42 up ${uptimeDays.toLocaleString()} days since birth
-
-    johnny@siem01:~$ visitor_scan
-    [VISITOR DETECTED] 
-    IP: 127.0.0.1 (Internal) | Browser: ${browserName} | OS: ${osName} | Resolution: ${screenRes}
-    
-    johnny@siem01:~$ tail -f /var/log/portfolio-access.log
-    [${new Date().toISOString().slice(0,19)}] NEW_SESSION: visitor@${osName} via ${browserName}
-    [${new Date().toISOString().slice(0,19)}] KONAMI_ACTIVATED: easter_egg_discovered
-    [${new Date().toISOString().slice(0,19)}] STATUS: impressive_find - recruiter_material_detected
-    [${new Date().toISOString().slice(0,19)}] HINT: try 'exfiltrate resume.pdf' for classified files...
-
-    johnny@siem01:~$ <input type="text" id="terminal-input" style="background:none;border:none;outline:none;color:#00ff00;font-family:inherit;font-size:inherit;width:min(300px, 80vw);" placeholder="type 'help' for commands"><span style="animation:blink 1s infinite;">_</span>
-                </pre>
-            </div>
-            <style>@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}} #terminal-input::placeholder { color: rgba(0,255,0,0.5); }</style>
-        `;
-
-        // Initialize Matrix rain animation
-        initMatrixRain();
-
-        const input = document.getElementById('terminal-input');
-        
-        // ESC key exits terminal mode
-        document.addEventListener('keydown', function escapeHandler(e) {
-            if (e.key === 'Escape') {
-                exitTerminalMode(originalPage);
-                document.removeEventListener('keydown', escapeHandler);
-            }
-        });
-
-        // Handle terminal commands
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const command = input.value.toLowerCase().trim();
-                
-                // Exit command
-                if (command === 'exit') {
-                    exitTerminalMode(originalPage);
-                    return;
-                }
-                
-                // Resume download commands
-                if (command === 'exfiltrate resume.pdf' || 
-                    command === 'cat resume.pdf' || 
-                    command === 'download resume.pdf' || 
-                    command === 'steal resume.pdf') {
-                    input.value = '';
-                    input.placeholder = '🎯 Resume downloaded! Type "exit" to return';
-                    input.style.color = '#00ff87';
-                    downloadResume();
-                    setTimeout(function() {
-                        input.placeholder = 'type commands or "exit"';
-                        input.style.color = '#00ff00';
-                    }, 3000);
-                    input.focus();
-                    return;
-                }
-                
-                // Help command
-                if (command === 'help' || command === 'ls' || command === '?') {
-                    input.value = '';
-                    input.placeholder = 'Commands: "exfiltrate resume.pdf", "exit"';
-                    setTimeout(function() {
-                        input.placeholder = 'type commands or "exit"';
-                    }, 4000);
-                    input.focus();
-                    return;
-                }
-                
-                // Invalid command
-                if (command.length > 0) {
-                    input.value = '';
-                    input.placeholder = '"' + command + '" not found - try "help"';
-                    input.style.color = '#ff4757';
-                    setTimeout(function() {
-                        input.placeholder = 'type commands or "exit"';
-                        input.style.color = '#00ff00';
-                    }, 2000);
-                    input.focus();
-                }
-            }
-        });
-
-        input.focus();
-    }
-
-    // Detect browser for terminal mode
-    function getBrowserName() {
-        const agent = navigator.userAgent.toLowerCase();
-        if (agent.includes('chrome')) return 'Chrome';
-        if (agent.includes('firefox')) return 'Firefox';
-        if (agent.includes('safari')) return 'Safari';
-        if (agent.includes('edge')) return 'Edge';
-        if (agent.includes('opera')) return 'Opera';
-        return 'Unknown';
-    }
-
-    // Detect OS for terminal mode
-    function getOSName() {
-        const platform = navigator.platform.toLowerCase();
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (platform.includes('win')) return 'Windows';
-        if (platform.includes('mac')) return 'macOS';
-        if (platform.includes('linux')) return 'Linux';
-        if (userAgent.includes('android')) return 'Android';
-        if (userAgent.includes('iphone') || userAgent.includes('ipad')) return 'iOS';
-        return 'Unknown';
-    }
-
-    // Exit terminal mode and restore original page
-    function exitTerminalMode(originalPage) {
-        document.body.innerHTML = originalPage;
-        location.reload();
-    }
-
-    // Download resume PDF
-    function downloadResume() {
-        window.open('Meintel_Johnny__Resume__December_2025.pdf', '_blank');
-        console.log('Resume exfiltrated successfully! 🎯');
-    }
-
-    // Matrix rain animation for terminal mode background
-    function initMatrixRain() {
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()";
-        const charArray = chars.split('');
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-        
-        // Initialize drop positions
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * canvas.height / fontSize;
-        }
-        
-        // Draw Matrix rain
-        function draw() {
-            // Fade effect
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw characters
-            ctx.fillStyle = '#0F3';
-            ctx.font = fontSize + 'px JetBrains Mono, monospace';
-            
-            for (let i = 0; i < drops.length; i++) {
-                const text = charArray[Math.floor(Math.random() * charArray.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                // Reset drop to top randomly
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-        
-        setInterval(draw, 50);
-    }
-
-    // ====================================================================
-    // WINDOW RESIZE HANDLER
-    // ====================================================================
-    // Reset mobile menu on desktop resize
-    
     window.addEventListener('resize', function() {
         if (window.innerWidth > 768) {
             navLinks.classList.remove('mobile-active');
