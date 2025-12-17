@@ -393,7 +393,7 @@
         .doc-card.resource:hover .doc-icon { color: var(--green); }
 
         /* =================================================================
-           PHASE TIMELINE NAVIGATION
+           PHASE TIMELINE NAVIGATION - FIXED
            ================================================================= */
         .phase-timeline-section {
             padding: 3rem 2rem;
@@ -415,7 +415,7 @@
         .phase-timeline {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* Changed from center to flex-start */
             position: relative;
             max-width: 900px;
             margin: 0 auto;
@@ -424,7 +424,7 @@
         .phase-timeline::before {
             content: '';
             position: absolute;
-            top: 50%;
+            top: 30px;  /* Position at circle vertical center (60px tall / 2) */
             left: 10%;
             right: 10%;
             height: 2px;
@@ -468,10 +468,13 @@
             justify-content: center;
             font-weight: 700;
             font-size: 1.1rem;
-            margin-bottom: 0.8rem;
+            margin: 0 0 0.8rem 0; /* CRITICAL: Reset all margins to exactly 0 on top */
+            padding: 0; /* CRITICAL: No padding */
             border: 3px solid;
             transition: all 0.3s ease;
             background: var(--card-bg);
+            line-height: 1;
+            flex-shrink: 0; /* Prevent any flex compression */
         }
 
         .phase-node.complete .phase-circle {
@@ -536,6 +539,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 0.3rem;
+            text-align: center;
         }
 
         .phase-name {
@@ -543,6 +547,7 @@
             text-align: center;
             max-width: 120px;
             line-height: 1.3;
+            margin: 0 auto;
         }
 
         .phase-status {
@@ -553,6 +558,8 @@
             border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            text-align: center;
+            display: inline-block;
         }
 
         .status-complete {
@@ -616,19 +623,48 @@
         }
         .uptime span { color: var(--cyan); }
 
-        /* Responsive */
+        /* =================================================================
+           MOBILE RESPONSIVE
+           ================================================================= */
         @media (max-width: 768px) {
-            .vuln-container { flex-direction: column; align-items: center; }
-            .vuln-card { max-width: 100%; }
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .vuln-container { 
+                flex-direction: column; 
+                align-items: center; 
+            }
+            
+            .vuln-card { 
+                max-width: 100%; 
+            }
+            
             .phase-timeline {
                 flex-direction: column;
                 gap: 2rem;
+                align-items: center;
             }
+            
             .phase-timeline::before {
                 display: none;
             }
+            
             .phase-node {
                 min-width: 100%;
+            }
+
+            .docs-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .vm-list {
+                gap: 1.25rem;
+            }
+
+            .vm-item {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -909,41 +945,41 @@
     </div>
 </section>
 
-<!-- PHASE TIMELINE NAVIGATION - FIXED -->
+<!-- PHASE TIMELINE NAVIGATION -->
 <section class="phase-timeline-section">
     <h3 class="phase-timeline-title">Project Timeline</h3>
     <div class="phase-timeline">
         
         <a href="phaseone.html" class="phase-node complete">
-            <div class="phase-circle">✓</div>
+            <div class="phase-circle">1</div>
             <div class="phase-label">Phase 1</div>
             <div class="phase-name">Vulnerable Foundation</div>
             <div class="phase-status status-complete">Complete</div>
         </a>
         
         <a href="phasetwo.html" class="phase-node complete">
-            <div class="phase-circle">✓</div>
+            <div class="phase-circle">2</div>
             <div class="phase-label">Phase 2</div>
             <div class="phase-name">SIEM Fundamentals</div>
             <div class="phase-status status-complete">Complete</div>
         </a>
         
         <a href="#" class="phase-node red-team">
-            <div class="phase-circle">⚔️</div>
+            <div class="phase-circle">3</div>
             <div class="phase-label">Phase 3</div>
             <div class="phase-name">Red Team Ops</div>
             <div class="phase-status status-planned">Planned</div>
         </a>
         
         <a href="#" class="phase-node upcoming">
-            <div class="phase-circle">🛡️</div>
+            <div class="phase-circle">4</div>
             <div class="phase-label">Phase 4</div>
             <div class="phase-name">Detection Engineering</div>
             <div class="phase-status status-planned">Planned</div>
         </a>
         
         <a href="#" class="phase-node upcoming">
-            <div class="phase-circle">🎯</div>
+            <div class="phase-circle">5</div>
             <div class="phase-label">Phase 5</div>
             <div class="phase-name">Purple Team Ops</div>
             <div class="phase-status status-planned">Planned</div>
